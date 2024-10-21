@@ -446,13 +446,11 @@ public class TestWorkspaceDataProvider {
 					new String[] { "NONE", "STANDARD", "DESERT", "JUNGLE", "SWAMP", "MOUNTAIN", "OCEAN", "NETHER" });
 			biome.villageType = getRandomItem(random,
 					new String[] { "none", "desert", "plains", "savanna", "snowy", "taiga" });
-			biome.genTemperature = new Biome.ClimatePoint(0.1, 0.4);
-			biome.genHumidity = new Biome.ClimatePoint(-0.1, 0.4);
-			biome.genContinentalness = new Biome.ClimatePoint(-2.0, 2.0);
-			biome.genErosion = new Biome.ClimatePoint(0.4, 1.4);
-			biome.genWeirdness = new Biome.ClimatePoint(1.0, 1.1);
+			biome.biomeWeight = new int[] { 0, 9, 45, 50 }[valueIndex];
 
 			biome.rainingPossibility = 1.1;
+			biome.baseHeight = -0.3;
+			biome.heightVariation = 0.7;
 			biome.temperature = 2.1;
 
 			List<Biome.SpawnEntry> entities = new ArrayList<>();

@@ -62,13 +62,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final JSpinner treesPerChunk = new JSpinner(new SpinnerNumberModel(1, 0, 256, 1));
 
 	private final JSpinner rainingPossibility = new JSpinner(new SpinnerNumberModel(0.5, 0, 1, 0.1));
+	private final JSpinner baseHeight = new JSpinner(new SpinnerNumberModel(0.1, -10, 10, 0.1));
+	private final JSpinner heightVariation = new JSpinner(new SpinnerNumberModel(0.2, 0, 2, 0.1));
 	private final JSpinner temperature = new JSpinner(new SpinnerNumberModel(0.5, -1.0, 2.0, 0.1));
-
-	private final JMinMaxSpinner genTemperature = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.0001);
-	private final JMinMaxSpinner genHumidity = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.0001);
-	private final JMinMaxSpinner genContinentalness = new JMinMaxSpinner(0.3, 1.0, -2.0, 2.0, 0.0001);
-	private final JMinMaxSpinner genErosion = new JMinMaxSpinner(-0.5, 0.5, -2.0, 2.0, 0.0001);
-	private final JMinMaxSpinner genWeirdness = new JMinMaxSpinner(-1, 1, -2.0, 2.0, 0.0001);
 
 	private final JRadioButton customTrees = L10N.radiobutton("elementgui.biome.custom_trees");
 	private final JRadioButton vanillaTrees = L10N.radiobutton("elementgui.biome.vanilla_trees");
@@ -128,6 +124,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final DataListComboBox particleToSpawn = new DataListComboBox(mcreator);
 	private final JSpinner particlesProbability = new JSpinner(new SpinnerNumberModel(0.5, 0, 100, 0.1));
 
+	private final JSpinner biomeWeight = new JSpinner(new SpinnerNumberModel(10, 0, 128, 1));
+
 	private final JComboBox<String> vanillaTreeType = new JComboBox<>(
 			new String[] { "Default", "Big trees", "Birch trees", "Savanna trees", "Mega pine trees",
 					"Mega spruce trees" });
@@ -137,8 +135,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	private final ValidationGroup page3group = new ValidationGroup();
 
 	private final DefaultFeaturesListField defaultFeatures = new DefaultFeaturesListField(mcreator);
-
-	private final JLabel coverageEstimate = new JLabel();
 
 	public BiomeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -293,9 +289,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		spawnBiomeNether.setOpaque(false);
 
-		coverageEstimate.setFont(coverageEstimate.getFont().deriveFont(15.0f));
-
-		JPanel spawnproperties = new JPanel(new GridLayout(12, 2, 25, 2));
+		JPanel spawnproperties = new JPanel(new GridLayout(9, 2, 25, 2));
 		spawnproperties.setOpaque(false);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/ground_block"),
@@ -310,29 +304,17 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 				L10N.label("elementgui.biome.underwater_block")));
 		spawnproperties.add(PanelUtils.join(underwaterBlock));
 
-		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/coverage_estimate"),
-				L10N.label("elementgui.biome.coverage_estimate")));
-		spawnproperties.add(PanelUtils.centerInPanel(coverageEstimate));
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/base_height"),
+				L10N.label("elementgui.biome.height")));
+		spawnproperties.add(baseHeight);
 
-		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/gen_temperature"),
-				L10N.label("elementgui.biome.gen_temperature")));
-		spawnproperties.add(genTemperature);
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/height_variation"),
+				L10N.label("elementgui.biome.height_variation")));
+		spawnproperties.add(heightVariation);
 
-		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/gen_humidity"),
-				L10N.label("elementgui.biome.gen_humidity")));
-		spawnproperties.add(genHumidity);
-
-		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/gen_continentalness"),
-				L10N.label("elementgui.biome.gen_continentalness")));
-		spawnproperties.add(genContinentalness);
-
-		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/gen_erosion"),
-				L10N.label("elementgui.biome.gen_erosion")));
-		spawnproperties.add(genErosion);
-
-		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/gen_weirdness"),
-				L10N.label("elementgui.biome.gen_weirdness")));
-		spawnproperties.add(genWeirdness);
+		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/weight"),
+				L10N.label("elementgui.biome.weight")));
+		spawnproperties.add(biomeWeight);
 
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_overworld"),
 				L10N.label("elementgui.biome.generate_overworld")));
@@ -345,12 +327,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnproperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/generate_nether"),
 				L10N.label("elementgui.biome.generate_nether")));
 		spawnproperties.add(spawnBiomeNether);
-
-		genTemperature.addChangeListener(e -> estimateGenCoverage());
-		genHumidity.addChangeListener(e -> estimateGenCoverage());
-		genContinentalness.addChangeListener(e -> estimateGenCoverage());
-		genErosion.addChangeListener(e -> estimateGenCoverage());
-		genWeirdness.addChangeListener(e -> estimateGenCoverage());
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(spawnproperties));
 
@@ -552,40 +528,12 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		updateBiomeTreesForm();
 		updateParticleParameters();
 
-		estimateGenCoverage();
-
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 
 			defaultFeatures.setListElements(Arrays.asList("Caves", "Ores", "FrozenTopLayer"));
 		}
-	}
-
-	private void estimateGenCoverage() {
-		double temperatureCoverage =
-				(Math.min(genTemperature.getMaxValue(), 1.0) - Math.max(genTemperature.getMinValue(), -1.0)) / 2.0;
-		double humidityCoverage =
-				(Math.min(genHumidity.getMaxValue(), 1.0) - Math.max(genHumidity.getMinValue(), -1.0)) / 2.0;
-		double continentalnessCoverage =
-				(Math.min(genContinentalness.getMaxValue(), 1.0) - Math.max(genContinentalness.getMinValue(), -1.0))
-						/ 2.0;
-		double erosionCoverage =
-				(Math.min(genErosion.getMaxValue(), 1.0) - Math.max(genErosion.getMinValue(), -1.0)) / 2.0;
-		double weirdnessCoverage =
-				(Math.min(genWeirdness.getMaxValue(), 1.0) - Math.max(genWeirdness.getMinValue(), -1.0)) / 2.0;
-
-		double totalCoverage =
-				temperatureCoverage * humidityCoverage * continentalnessCoverage * erosionCoverage * weirdnessCoverage
-						* 100.0;
-
-		if (totalCoverage >= 99.999) {
-			totalCoverage = 99.999;
-		} else if (totalCoverage <= 0.001) {
-			totalCoverage = 0.001;
-		}
-
-		coverageEstimate.setText(new DecimalFormat("#0.000").format(totalCoverage) + " %");
 	}
 
 	@Override public void reloadDataLists() {
@@ -690,6 +638,8 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		waterFogColor.setColor(biome.waterFogColor);
 		treesPerChunk.setValue(biome.treesPerChunk);
 		rainingPossibility.setValue(biome.rainingPossibility);
+		baseHeight.setValue(biome.baseHeight);
+		heightVariation.setValue(biome.heightVariation);
 		spawnBiome.setSelected(biome.spawnBiome);
 		spawnBiomeNether.setSelected(biome.spawnBiomeNether);
 		spawnInCaves.setSelected(biome.spawnInCaves);
@@ -715,25 +665,13 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		spawnRuinedPortal.setSelectedItem(biome.spawnRuinedPortal);
 
 		temperature.setValue(biome.temperature);
+		biomeWeight.setValue(biome.biomeWeight);
 		defaultFeatures.setListElements(biome.defaultFeatures);
 		vanillaTreeType.setSelectedItem(biome.vanillaTreeType);
 		spawnEntries.setEntries(biome.spawnEntries);
 
-		genTemperature.setMinValue(biome.genTemperature.min);
-		genTemperature.setMaxValue(biome.genTemperature.max);
-		genHumidity.setMinValue(biome.genHumidity.min);
-		genHumidity.setMaxValue(biome.genHumidity.max);
-		genContinentalness.setMinValue(biome.genContinentalness.min);
-		genContinentalness.setMaxValue(biome.genContinentalness.max);
-		genErosion.setMinValue(biome.genErosion.min);
-		genErosion.setMaxValue(biome.genErosion.max);
-		genWeirdness.setMinValue(biome.genWeirdness.min);
-		genWeirdness.setMaxValue(biome.genWeirdness.max);
-
 		updateBiomeTreesForm();
 		updateParticleParameters();
-
-		estimateGenCoverage();
 	}
 
 	@Override public Biome getElementFromGUI() {
@@ -764,7 +702,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		biome.treesPerChunk = (int) treesPerChunk.getValue();
 		biome.rainingPossibility = (double) rainingPossibility.getValue();
+		biome.baseHeight = (double) baseHeight.getValue();
+		biome.heightVariation = (double) heightVariation.getValue();
 		biome.temperature = (double) temperature.getValue();
+		biome.biomeWeight = (int) biomeWeight.getValue();
 		biome.defaultFeatures = defaultFeatures.getListElements();
 		biome.vanillaTreeType = (String) vanillaTreeType.getSelectedItem();
 		biome.spawnEntries = spawnEntries.getEntries();
@@ -797,18 +738,10 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.spawnEndCity = spawnEndCity.isSelected();
 		biome.spawnRuinedPortal = (String) spawnRuinedPortal.getSelectedItem();
 
-		biome.genTemperature = new Biome.ClimatePoint(genTemperature.getMinValue(), genTemperature.getMaxValue());
-		biome.genHumidity = new Biome.ClimatePoint(genHumidity.getMinValue(), genHumidity.getMaxValue());
-		biome.genContinentalness = new Biome.ClimatePoint(genContinentalness.getMinValue(),
-				genContinentalness.getMaxValue());
-		biome.genErosion = new Biome.ClimatePoint(genErosion.getMinValue(), genErosion.getMaxValue());
-		biome.genWeirdness = new Biome.ClimatePoint(genWeirdness.getMinValue(), genWeirdness.getMaxValue());
-
 		return biome;
 	}
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-biome");
 	}
-
 }

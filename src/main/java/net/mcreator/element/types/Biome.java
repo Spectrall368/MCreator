@@ -62,16 +62,14 @@ import java.util.List;
 
 	public double rainingPossibility;
 	public double temperature;
+	public double baseHeight;
+	public double heightVariation;
 
 	public boolean spawnBiome;
 	public boolean spawnInCaves;
 	public boolean spawnBiomeNether;
 
-	public ClimatePoint genTemperature;
-	public ClimatePoint genHumidity;
-	public ClimatePoint genContinentalness;
-	public ClimatePoint genErosion;
-	public ClimatePoint genWeirdness;
+	public int biomeWeight;
 
 	public int treesPerChunk;
 	public String vanillaTreeType;

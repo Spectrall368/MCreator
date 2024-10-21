@@ -79,7 +79,6 @@ public class ConverterRegistry {
 			new BiomeSpawnListConverter(),
 			new BiomeDefaultFeaturesConverter(),
 			new BiomeFrozenTopLayerConverter(),
-			new BiomeGenParametersConverter(),
 			new BiomeCustomFeaturesConverter(),
 			new BiomeFogColorConverter()
 		));
