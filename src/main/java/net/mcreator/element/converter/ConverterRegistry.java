@@ -83,7 +83,6 @@ public class ConverterRegistry {
 			new BiomeSpawnListConverter(),
 			new BiomeDefaultFeaturesConverter(),
 			new BiomeFrozenTopLayerConverter(),
-			new BiomeGenParametersConverter(),
 			new BiomeCustomFeaturesConverter()
 		));
 		put(ModElementType.BLOCK, List.of(
