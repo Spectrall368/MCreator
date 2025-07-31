@@ -1,0 +1,31 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "dimension",
+      "datalist": "dimensions",
+      "customEntryProviders": "dimension"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 175,
+  "mcreator": {
+    "toolbox_id": "playermanagement",
+    "toolbox_init": [
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+    ],
+    "fields": [
+      "dimension"
+    ],
+    "inputs": [
+      "entity"
+    ]
+  }
+}

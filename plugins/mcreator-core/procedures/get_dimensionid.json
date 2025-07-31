@@ -1,0 +1,19 @@
+{
+  "args0": [
+    {
+      "type": "field_data_list_selector",
+      "name": "dimension",
+      "datalist": "dimensions",
+      "customEntryProviders": "dimension"
+    }
+  ],
+  "inputsInline": true,
+  "output": "DimensionType",
+  "colour": 123,
+  "mcreator": {
+    "toolbox_id": "mcelements",
+    "fields": [
+      "dimension"
+    ]
+  }
+}

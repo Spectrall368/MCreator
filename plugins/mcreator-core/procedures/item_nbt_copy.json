@@ -1,0 +1,29 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "a",
+      "check": "MCItem"
+    },
+    {
+      "type": "input_value",
+      "name": "b",
+      "check": "MCItem"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 350,
+  "mcreator": {
+    "toolbox_id": "itemmanagement",
+    "toolbox_init": [
+      "~<value name=\"a\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>",
+      "~<value name=\"b\"><block type=\"itemstack_to_mcitem\"></block></value>"
+    ],
+    "inputs": [
+      "a",
+      "b"
+    ]
+  }
+}

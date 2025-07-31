@@ -1,0 +1,7 @@
+{
+  "id": "core",
+  "weight": 10,
+  "info": {
+    "name": "MCreator core plugin"
+  }
+}
