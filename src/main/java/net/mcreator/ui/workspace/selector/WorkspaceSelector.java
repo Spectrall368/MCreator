@@ -301,6 +301,14 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		MCREvent.event(new WorkspaceSelectorLoadedEvent(this));
 
+		addWindowListener(new WindowAdapter() {
+			@Override public void windowOpened(WindowEvent e) {
+				super.windowOpened(e);
+				reloadRecents();
+				newWorkspace.requestFocusInWindow();
+			}
+		});
+
 		setSize(795, 460);
 		setResizable(false);
 		setLocationRelativeTo(null);
@@ -485,16 +493,6 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		recentPanel.revalidate();
 	}
 
-	@Override public void setVisible(boolean b) {
-		if (b)
-			reloadRecents();
-
-		super.setVisible(b);
-
-		if (b)
-			newWorkspace.requestFocusInWindow();
-	}
-
 	private JButton mainWorkspaceButton(String text, ImageIcon icon, ActionListener event) {
 		JButton newWorkspace = new JButton(text);
 		ComponentUtils.deriveFont(newWorkspace, 13);
@@ -631,7 +629,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		if (!Launcher.version.isSnapshot()) {
 			soim = new ImagePanel(SplashScreen.getSplashImage(true));
 			((ImagePanel) soim).setFitToWidth(true);
-			((ImagePanel) soim).setOffsetY(-200);
+			((ImagePanel) soim).setOffsetY(-80);
 		} else {
 			soim = new JPanel();
 			soim.setBackground(Theme.current().getSecondAltBackgroundColor());

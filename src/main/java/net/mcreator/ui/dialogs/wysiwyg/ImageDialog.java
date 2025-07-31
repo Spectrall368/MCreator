@@ -61,7 +61,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 				IHelpContext.NONE.withEntry("gui/image_display_condition"), editor.mcreator,
 				L10N.t("dialog.gui.image_display_condition"), ProcedureSelector.Side.CLIENT, false,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		displayCondition.refreshList();
 
 		add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(options, displayCondition, 20, 5)));
@@ -83,9 +83,9 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 			anchor.setSelectedItem(image.anchorPoint);
 		}
 
-		cancel.addActionListener(arg01 -> setVisible(false));
+		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
-			setVisible(false);
+			dispose();
 			if (textureSelector.hasTexture()) {
 				if (image == null) {
 					Image component = new Image(0, 0, textureSelector.getTextureName(), scale1x.isSelected(),

@@ -36,7 +36,7 @@ import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.resources.Model;
@@ -46,6 +46,7 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class JItemStatesListEntry extends JPanel implements IValidable {
 
@@ -67,7 +68,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 42);
-		texture.setValidator(new TileHolderValidator(texture));
+		texture.setValidator(new TextureSelectionButtonValidator(texture));
 
 		ComponentUtils.deriveFont(model, 16);
 		model.setPreferredSize(new Dimension(350, 42));
@@ -112,7 +113,8 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	public void reloadDataLists() {
 		ComboBoxUtil.updateComboBoxContents(model, ListUtils.merge(Arrays.asList(ItemGUI.builtinitemmodels),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
-						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ).toList()));
+						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
+						.collect(Collectors.toList()), Model.getJavaModels(mcreator.getWorkspace())));
 	}
 
 	JStateLabel getStateLabel() {

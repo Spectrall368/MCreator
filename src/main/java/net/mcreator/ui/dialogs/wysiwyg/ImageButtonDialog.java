@@ -82,14 +82,14 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 
 		ProcedureSelector onClick = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/on_button_clicked"),
 				editor.mcreator, L10N.t("dialog.gui.button_event_on_clicked"), ProcedureSelector.Side.BOTH, false,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		onClick.refreshList();
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/button_display_condition"), editor.mcreator,
 				L10N.t("dialog.gui.button_display_condition"), ProcedureSelector.Side.CLIENT, false,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		displayCondition.refreshList();
 
 		options.add(new JEmptyBox(20, 20));
@@ -112,11 +112,11 @@ public class ImageButtonDialog extends AbstractWYSIWYGDialog<ImageButton> {
 			displayCondition.setSelectedProcedure(button.displayCondition);
 		}
 
-		cancel.addActionListener(arg01 -> setVisible(false));
+		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
 			if (hoveredTextureSelector.getValidationStatus().getValidationResultType()
 					!= Validator.ValidationResultType.ERROR) {
-				setVisible(false);
+				dispose();
 				if (textureSelector.hasTexture()) {
 					if (button == null) {
 						String name = textToMachineName(editor.getComponentList(), "imagebutton_",

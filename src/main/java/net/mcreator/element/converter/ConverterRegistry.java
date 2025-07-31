@@ -56,6 +56,8 @@ import net.mcreator.element.converter.v2024_4.*;
 import net.mcreator.element.converter.v2025_1.EnchantabilityConverter;
 import net.mcreator.element.converter.v2025_1.FeatureCarvingMaskRemover;
 import net.mcreator.element.converter.v2025_1.ParticleLitRemover;
+import net.mcreator.element.converter.v2025_2.BlockLegacyMaterialRemover;
+import net.mcreator.element.converter.v2025_2.GuistateProceduresConverter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -96,7 +98,8 @@ public class ConverterRegistry {
 			new SpecialInformationConverter(),
 			new BlockHarvestLevelConverter(),
 			new ItemsCreativeTabsConverter(),
-			new NoGUISelectedConverter()
+			new NoGUISelectedConverter(),
+			new BlockLegacyMaterialRemover()
 		));
 		put(ModElementType.DIMENSION, List.of(
 			new DimensionLuminanceFixer(),
@@ -184,7 +187,8 @@ public class ConverterRegistry {
 			new HarvestLevelProceduresRemover(),
 			new PlantTypeProcedureRemover(),
 			new net.mcreator.element.converter.v2024_3.WorldDependencyAdder(),
-			new net.mcreator.element.converter.v2025_1.WorldDependencyAdder()
+			new net.mcreator.element.converter.v2025_1.WorldDependencyAdder(),
+			new GuistateProceduresConverter()
 		));
 		put(ModElementType.RECIPE, List.of(
 			new RecipeTypeConverter()

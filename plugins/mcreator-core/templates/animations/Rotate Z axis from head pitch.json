@@ -1,3 +1,0 @@
-[
-	".zRot = headPitch / (180F / (float)Math.PI);"
-]

@@ -210,12 +210,12 @@ public class ElementUtil {
 		return loadDataListAndElements(workspace, "structures", null, "structure");
 	}
 
-	public static List<DataListEntry> loadMaterials() {
-		return DataListLoader.loadDataList("materials");
-	}
-
 	public static List<DataListEntry> loadMapColors() {
 		return DataListLoader.loadDataList("mapcolors");
+	}
+
+	public static List<DataListEntry> loadNoteBlockInstruments() {
+		return DataListLoader.loadDataList("noteblockinstruments");
 	}
 
 	public static List<DataListEntry> loadAnimations(Workspace workspace) {
@@ -367,7 +367,8 @@ public class ElementUtil {
 	public static List<DataListEntry> loadAllConfiguredFeatures(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElements(workspace,
 				mu -> mu.getBaseTypesProvided().contains(BaseType.CONFIGUREDFEATURE));
-		retval.addAll(DataListLoader.loadDataList("configuredfeatures"));
+		retval.addAll(DataListLoader.loadDataList("configuredfeatures").stream()
+				.filter(e -> e.isSupportedInWorkspace(workspace)).toList());
 		return retval;
 	}
 

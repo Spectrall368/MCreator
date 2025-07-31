@@ -24,6 +24,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
+import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleErrorCodes;
 import net.mcreator.integration.IntegrationTestSetup;
@@ -67,7 +68,14 @@ import static org.junit.jupiter.api.Assertions.*;
 		Random random = new Random(rgenseed);
 		LOG.info("Random number generator seed: {}", rgenseed);
 
-		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
+		Set<String> fileNames;
+		if (System.getenv("MCREATOR_TEST_GENERATORS") != null) {
+			// comma separated to set, use stream oneliner
+			fileNames = Arrays.stream(System.getenv("MCREATOR_TEST_GENERATORS").split(","))
+					.map(generator -> generator + "/generator.yaml").collect(Collectors.toSet());
+		} else {
+			fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
+		}
 
 		// Sort generators, so they are tested in predictable order
 		List<String> fileNamesSorted = fileNames.stream().sorted((a, b) -> {
@@ -113,6 +121,12 @@ import static org.junit.jupiter.api.Assertions.*;
 									latch.countDown();
 								});
 						latch.await();
+
+						// Attach dummy file watcher to also test its operation
+						workspace.get().getGenerator().getFileWatcher()
+								.watchFolder(GeneratorUtils.getResourceRoot(workspace.get(), generatorConfiguration));
+						workspace.get().getGenerator().getFileWatcher().addListener(changedFiles -> {
+						});
 					}));
 
 					if (generatorConfiguration.getSpecificRoot("vanilla_block_textures_dir") != null) {

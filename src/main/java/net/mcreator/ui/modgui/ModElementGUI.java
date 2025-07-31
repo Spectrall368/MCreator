@@ -28,7 +28,6 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.component.JModElementProgressPanel;
-import net.mcreator.ui.component.ScrollWheelPassLayer;
 import net.mcreator.ui.component.UnsupportedComponent;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -38,6 +37,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.codeviewer.ModElementCodeViewer;
+import net.mcreator.ui.search.ITextFieldSearchable;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.variants.modmaker.ModMaker;
@@ -52,6 +52,7 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.lang.reflect.Field;
 import java.net.URI;
@@ -59,7 +60,8 @@ import java.net.URISyntaxException;
 import java.util.*;
 import java.util.List;
 
-public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewBase implements IHelpContext {
+public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewBase
+		implements IHelpContext, ITextFieldSearchable {
 
 	private static final Logger LOG = LogManager.getLogger(ModElementGUI.class);
 
@@ -74,10 +76,12 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	private ModElementCreatedListener<GE> modElementCreatedListener;
 
-	private final Map<String, JComponent> pages = new LinkedHashMap<>();
+	private final List<ModElementGUIPage> pages = new ArrayList<>();
 
 	private ModElementCodeViewer<GE> modElementCodeViewer = null;
 	private JSplitPane splitPane;
+
+	private final ModElementGUISearch search = new ModElementGUISearch(this);
 
 	public ModElementGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator);
@@ -91,31 +95,22 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		};
 	}
 
-	public final void addPage(JComponent component) {
-		addPage(component, true);
+	public final ModElementGUIPage addPage(JComponent component) {
+		return addPage(component, true);
 	}
 
-	public final void addPage(JComponent component, boolean scroll) {
-		addPage(modElement.getType().getReadableName(), component, scroll);
+	public final ModElementGUIPage addPage(JComponent component, boolean scroll) {
+		return addPage(modElement.getType().getReadableName(), component, scroll);
 	}
 
-	public final void addPage(String name, JComponent component) {
-		addPage(name, component, true);
+	public final ModElementGUIPage addPage(String name, JComponent component) {
+		return addPage(name, component, true);
 	}
 
-	public final void addPage(String name, JComponent component, boolean scroll) {
-		if (scroll) {
-			JScrollPane splitScroll = new JScrollPane(component);
-			splitScroll.setOpaque(false);
-			splitScroll.getViewport().setOpaque(false);
-			splitScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-			splitScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-			splitScroll.getVerticalScrollBar().setUnitIncrement(15);
-			splitScroll.getHorizontalScrollBar().setUnitIncrement(15);
-			pages.put(name, new JLayer<>(splitScroll, new ScrollWheelPassLayer()));
-		} else {
-			pages.put(name, component);
-		}
+	public final ModElementGUIPage addPage(String name, JComponent component, boolean scroll) {
+		ModElementGUIPage page = new ModElementGUIPage(name, component, scroll);
+		pages.add(page);
+		return page;
 	}
 
 	public void setTargetFolder(@Nullable FolderElement targetFolder) {
@@ -186,7 +181,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			this.modElementCodeViewer = new ModElementCodeViewer<>(this);
 
 		if (pages.size() > 1) {
-			JModElementProgressPanel split = new JModElementProgressPanel(pages.values().toArray(new Component[0]));
+			JModElementProgressPanel split = new JModElementProgressPanel(
+					pages.stream().map(ModElementGUIPage::getComponent).toArray(Component[]::new));
 
 			Map<Integer, AbstractButton> pagers = new HashMap<>();
 			ButtonGroup buttonGroup = new ButtonGroup();
@@ -199,7 +195,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			back.setContentAreaFilled(false);
 			back.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			back.addActionListener(event -> {
-				AggregatedValidationResult validationResult = validatePage(split.getPage());
+				AggregatedValidationResult validationResult = pages.get(split.getPage()).getValidationResult();
 				if (validationResult.validateIsErrorFree()) {
 					pagers.get(split.getPage()).setIcon(null);
 				} else {
@@ -215,7 +211,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			forward.setContentAreaFilled(false);
 			forward.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			forward.addActionListener(event -> {
-				AggregatedValidationResult validationResult = validatePage(split.getPage());
+				AggregatedValidationResult validationResult = pages.get(split.getPage()).getValidationResult();
 				if (validationResult.validateIsErrorFree()) {
 					pagers.get(split.getPage()).setIcon(null);
 				} else {
@@ -241,8 +237,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			pager.add(new JLabel(UIRES.get("separator")));
 
 			int idx = 0;
-			for (Map.Entry<String, JComponent> entry : pages.entrySet()) {
-				JToggleButton page = new JToggleButton(entry.getKey());
+			for (ModElementGUIPage pageEntry : pages) {
+				JToggleButton page = new JToggleButton(pageEntry.getID());
 				page.setBorder(null);
 				page.setContentAreaFilled(false);
 				page.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -256,6 +252,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 				int finalIdx = idx;
 				page.addActionListener(e -> split.setPage(finalIdx));
+
+				pageEntry.setShowThisPageAction(page::doClick);
 
 				if (idx == 0)
 					page.setSelected(true);
@@ -274,17 +272,14 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			save.setForeground(Theme.current().getSecondAltBackgroundColor());
 			save.addActionListener(event -> {
 				List<ValidationGroup> errors = new ArrayList<>();
-
-				int i = 0;
-				for (Map.Entry<String, JComponent> ignored : pages.entrySet()) {
-					AggregatedValidationResult validationResult = validatePage(i);
+				for (int i = 0; i < pages.size(); i++) {
+					AggregatedValidationResult validationResult = pages.get(i).getValidationResult();
 					if (!validationResult.validateIsErrorFree()) {
 						pagers.get(i).setIcon(UIRES.get("16px.clear"));
 						errors.add(validationResult);
 					} else {
 						pagers.get(i).setIcon(null);
 					}
-					i++;
 				}
 
 				AggregatedValidationResult validationResult = new AggregatedValidationResult(errors);
@@ -300,17 +295,14 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			saveOnly.setForeground(Theme.current().getForegroundColor());
 			saveOnly.addActionListener(event -> {
 				List<ValidationGroup> errors = new ArrayList<>();
-
-				int i = 0;
-				for (Map.Entry<String, JComponent> ignored : pages.entrySet()) {
-					AggregatedValidationResult validationResult = validatePage(i);
+				for (int i = 0; i < pages.size(); i++) {
+					AggregatedValidationResult validationResult = pages.get(i).getValidationResult();
 					if (!validationResult.validateIsErrorFree()) {
 						pagers.get(i).setIcon(UIRES.get("16px.clear"));
 						errors.add(validationResult);
 					} else {
 						pagers.get(i).setIcon(null);
 					}
-					i++;
 				}
 
 				AggregatedValidationResult validationResult = new AggregatedValidationResult(errors);
@@ -359,6 +351,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				LOG.warn("Failed to create help context", e);
 			}
 
+			toolBarLeft.add(search);
+
 			add("North",
 					ComponentUtils.applyPadding(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, false,
 							true, false));
@@ -370,7 +364,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			saveOnly.setBackground(Theme.current().getAltBackgroundColor());
 			saveOnly.setForeground(Theme.current().getForegroundColor());
 			saveOnly.addActionListener(event -> {
-				AggregatedValidationResult validationResult = validatePage(0);
+				AggregatedValidationResult validationResult = pages.getFirst().getValidationResult();
 				if (validationResult.validateIsErrorFree())
 					finishModCreation(false);
 				else
@@ -382,7 +376,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			save.setBackground(Theme.current().getInterfaceAccentColor());
 			save.setForeground(Theme.current().getSecondAltBackgroundColor());
 			save.addActionListener(event -> {
-				AggregatedValidationResult validationResult = validatePage(0);
+				AggregatedValidationResult validationResult = pages.getFirst().getValidationResult();
 				if (validationResult.validateIsErrorFree())
 					finishModCreation(true);
 				else
@@ -432,7 +426,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					ComponentUtils.applyPadding(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, false,
 							true, false));
 
-			centerComponent = new ArrayList<>(pages.values()).getFirst();
+			centerComponent = pages.getFirst().getComponent();
 		}
 
 		if (modElementCodeViewer != null) {
@@ -629,8 +623,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	protected abstract void initGUI();
 
-	protected abstract AggregatedValidationResult validatePage(int page);
-
 	protected void afterGeneratableElementStored() {
 	}
 
@@ -650,6 +642,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	public void reloadDataLists() {
 	}
 
+	@Override public JTextComponent getSearchTextField() {
+		return search;
+	}
+
 	/**
 	 * This method is called to open a mod element in the GUI
 	 */
@@ -661,10 +657,14 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		return editingMode;
 	}
 
+	final List<ModElementGUIPage> getPages() {
+		return pages;
+	}
+
 	public final AggregatedValidationResult validateAllPages() {
 		List<ValidationGroup> errors = new ArrayList<>();
-		for (int i = 0; i < pages.size(); i++) {
-			AggregatedValidationResult validationResult = validatePage(i);
+		for (ModElementGUIPage page : pages) {
+			AggregatedValidationResult validationResult = page.getValidationResult();
 			if (!validationResult.validateIsErrorFree())
 				errors.add(validationResult);
 		}
@@ -686,5 +686,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			throw new RuntimeException(e);
 		}
 	}
+
+	@Override @Nullable public abstract URI contextURL() throws URISyntaxException;
 
 }

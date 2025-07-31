@@ -191,7 +191,7 @@ import java.util.stream.Collectors;
 					}
 				}
 				mcreator.getWorkspace().markDirty();
-				getVerticalTab("mods").reloadElements();
+				getVerticalTab(WorkspacePanelMods.class).reloadElements();
 			} else {
 				Toolkit.getDefaultToolkit().beep();
 			}
@@ -710,13 +710,12 @@ import java.util.stream.Collectors;
 		mainp.add("ep", PanelUtils.totalCenterInPanel(emptbtpd));
 		mainp.add("sp", sp);
 
-		addVerticalTab("mods", L10N.t("workspace.category.mod_elements"),
+		addVerticalTab(L10N.t("workspace.category.mod_elements"),
 				new WorkspacePanelMods(PanelUtils.westAndCenterElement(toolp, modElementsPanel)));
-		addVerticalTab("resources", L10N.t("workspace.category.resources"), resourcesPan);
-		addVerticalTab("tags", L10N.t("workspace.category.tags"), new WorkspacePanelTags(this));
-		addVerticalTab("variables", L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this));
-		addVerticalTab("localization", L10N.t("workspace.category.localization"),
-				new WorkspacePanelLocalizations(this));
+		addVerticalTab(L10N.t("workspace.category.resources"), resourcesPan);
+		addVerticalTab(L10N.t("workspace.category.tags"), new WorkspacePanelTags(this));
+		addVerticalTab(L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this));
+		addVerticalTab(L10N.t("workspace.category.localization"), new WorkspacePanelLocalizations(this));
 
 		switchToVerticalTab("mods");
 
@@ -804,7 +803,7 @@ import java.util.stream.Collectors;
 
 		list.cancelDND();
 
-		getVerticalTab("mods").reloadElements();
+		getVerticalTab(WorkspacePanelMods.class).reloadElements();
 
 		// reload breadcrumb
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
@@ -1181,6 +1180,30 @@ import java.util.stream.Collectors;
 					});
 					reloadWorkspaceTab();
 
+					if (!references.isEmpty()) {
+						ProgressDialog dial = new ProgressDialog(mcreator,
+								L10N.t("workspace.elements.delete_modelement_title"));
+						Thread t = new Thread(() -> {
+							ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
+									L10N.t("workspace.elements.delete_modelement_regeneration"));
+							dial.addProgressUnit(p1);
+							int i = 0;
+							for (ModElement mod : references) {
+								GeneratableElement generatableElement = mod.getGeneratableElement();
+								if (generatableElement != null) {
+									// generate mod element
+									mcreator.getGenerator().generateElement(generatableElement);
+								}
+								i++;
+								p1.setPercent((int) (i / (float) references.size() * 100));
+							}
+							p1.markStateOk();
+							dial.hideDialog();
+						}, "RegenerateReferences");
+						t.start();
+						dial.setVisible(true);
+					}
+
 					if (buildNeeded.get())
 						mcreator.getActionRegistry().buildWorkspace.doAction();
 				}
@@ -1195,7 +1218,7 @@ import java.util.stream.Collectors;
 		if (name != null) {
 			currentFolder.addChild(new FolderElement(name, currentFolder));
 			mcreator.getWorkspace().markDirty();
-			getVerticalTab("mods").reloadElements();
+			getVerticalTab(WorkspacePanelMods.class).reloadElements();
 		}
 	}
 
@@ -1206,7 +1229,7 @@ import java.util.stream.Collectors;
 			selected.setName(mcreator.getWorkspace(), newName);
 
 			mcreator.getWorkspace().markDirty();
-			getVerticalTab("mods").reloadElements();
+			getVerticalTab(WorkspacePanelMods.class).reloadElements();
 		}
 	}
 

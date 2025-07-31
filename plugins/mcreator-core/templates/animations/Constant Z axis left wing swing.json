@@ -1,3 +1,0 @@
-[
-    ".zRot = (Mth.sin(ageInTicks * 0.6F + 3) * 0.6F);"
-]

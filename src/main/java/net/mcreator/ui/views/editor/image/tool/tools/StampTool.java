@@ -74,7 +74,7 @@ public class StampTool extends AbstractDrawingTool {
 		templateChooserButton.addActionListener(event -> templateChooser.setVisible(true));
 
 		templateChooser.naprej.addActionListener(arg01 -> {
-			templateChooser.setVisible(false);
+			templateChooser.dispose();
 			selection = templateChooser.list.getSelectedValue();
 			ImageIcon icon = ImageMakerTexturesCache.CACHE.get(selection);
 			templateChooserButton.setIcon(new ImageIcon(ImageUtils.resize(icon.getImage(), 32)));
@@ -133,7 +133,7 @@ public class StampTool extends AbstractDrawingTool {
 
 	@Override public void mouseExited(MouseEvent e) {
 		canvas.enablePreview(false);
-		canvas.getCanvasRenderer().repaint();
+		canvas.getImageMakerView().getCanvasRenderer().repaint();
 		super.mouseExited(e);
 	}
 
@@ -144,7 +144,7 @@ public class StampTool extends AbstractDrawingTool {
 
 	@Override public void toolDisabled(ToolActivationEvent e) {
 		canvas.enableCustomPreview(false);
-		canvas.getCanvasRenderer().repaint();
+		canvas.getImageMakerView().getCanvasRenderer().repaint();
 		super.toolDisabled(e);
 	}
 

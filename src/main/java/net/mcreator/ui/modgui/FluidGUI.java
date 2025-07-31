@@ -44,11 +44,10 @@ import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -112,6 +111,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(1, 0, 15, 1));
 	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(0, 0, 9999999, 1));
+	private final JCheckBox ignitedByLava = L10N.checkbox("elementgui.common.enable");
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
@@ -352,7 +352,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
-		JPanel blockProperties = new JPanel(new GridLayout(8, 2, 20, 2));
+		JPanel blockProperties = new JPanel(new GridLayout(9, 2, 20, 2));
 		blockProperties.setOpaque(false);
 
 		resistance.setOpaque(false);
@@ -360,6 +360,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		lightOpacity.setOpaque(false);
 		emissiveRendering.setOpaque(false);
 		tickRate.setOpaque(false);
+		ignitedByLava.setOpaque(false);
 		flammability.setOpaque(false);
 		fireSpreadSpeed.setOpaque(false);
 
@@ -378,6 +379,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		blockProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/tick_rate"),
 				L10N.label("elementgui.common.tick_rate")));
 		blockProperties.add(tickRate);
+
+		blockProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/ignited_by_lava"),
+				L10N.label("elementgui.block.ignited_by_lava")));
+		blockProperties.add(ignitedByLava);
 
 		blockProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/flammability"),
 				L10N.label("elementgui.block.flammability")));
@@ -445,8 +450,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 
-		textureStill.setValidator(new TileHolderValidator(textureStill));
-		textureFlowing.setValidator(new TileHolderValidator(textureFlowing));
+		textureStill.setValidator(new TextureSelectionButtonValidator(textureStill));
+		textureFlowing.setValidator(new TextureSelectionButtonValidator(textureFlowing));
 
 		texturesValidationGroup.addValidationElement(textureStill);
 		texturesValidationGroup.addValidationElement(textureFlowing);
@@ -460,8 +465,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		page1group.addValidationElement(bucketName);
 
-		addPage(L10N.t("elementgui.common.page_visual"), visualsPage);
-		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+		addPage(L10N.t("elementgui.common.page_visual"), visualsPage).validate(texturesValidationGroup);
+		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(page1group);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane2);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 
@@ -496,14 +501,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		ComboBoxUtil.updateComboBoxContents(dripParticle, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 	}
 
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(texturesValidationGroup);
-		else if (page == 1)
-			return new AggregatedValidationResult(page1group);
-		return new AggregatedValidationResult.PASS();
-	}
-
 	@Override public void openInEditingMode(Fluid fluid) {
 		textureStill.setTexture(fluid.textureStill);
 		textureFlowing.setTexture(fluid.textureFlowing);
@@ -535,6 +532,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		lightOpacity.setValue(fluid.lightOpacity);
 		emissiveRendering.setSelected(fluid.emissiveRendering);
 		tickRate.setValue(fluid.tickRate);
+		ignitedByLava.setSelected(fluid.ignitedByLava);
 		flammability.setValue(fluid.flammability);
 		fireSpreadSpeed.setValue(fluid.fireSpreadSpeed);
 		colorOnMap.setSelectedItem(fluid.colorOnMap);
@@ -593,6 +591,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.lightOpacity = (int) lightOpacity.getValue();
 		fluid.emissiveRendering = emissiveRendering.isSelected();
 		fluid.tickRate = (int) tickRate.getValue();
+		fluid.ignitedByLava = ignitedByLava.isSelected();
 		fluid.flammability = (int) flammability.getValue();
 		fluid.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
 		fluid.colorOnMap = colorOnMap.getSelectedItem().toString();

@@ -55,7 +55,6 @@ import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
@@ -167,7 +166,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 	private SingleModElementSelector guiBoundTo;
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
-	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
+	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(99, 1, 1024, 1));
 
 	private MCItemHolder rangedAttackItem;
 
@@ -259,6 +258,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 	private JEntityAnimationList animations;
 
+	private final JCheckBox sensitiveToVibration = L10N.checkbox("elementgui.common.enable");
+	private GameEventListField vibrationalEvents;
+	private NumberProcedureSelector vibrationSensitivityRadius;
+	private ProcedureSelector canReceiveVibrationCondition;
+	private ProcedureSelector onReceivedVibration;
+
 	public LivingEntityGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
@@ -306,6 +311,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	}
 
 	@Override protected void initGUI() {
+		vibrationalEvents = new GameEventListField(mcreator, true);
+
 		onStruckByLightning = new ProcedureSelector(this.withEntry("entity/when_struck_by_lightning"), mcreator,
 				L10N.t("elementgui.living_entity.event_struck_by_lightning"), AbstractProcedureSelector.Side.SERVER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
@@ -368,6 +375,20 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.t("elementgui.living_entity.bounding_box_scale"), AbstractProcedureSelector.Side.BOTH,
 				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 210,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		vibrationSensitivityRadius = new NumberProcedureSelector(this.withEntry("entity/vibration_sensitivity_radius"),
+				mcreator, L10N.t("elementgui.living_entity.vibration_sensitivity_radius"),
+				AbstractProcedureSelector.Side.SERVER, new JSpinner(new SpinnerNumberModel(7, 0, Integer.MAX_VALUE, 1)),
+				130, Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		canReceiveVibrationCondition = new ProcedureSelector(this.withEntry("entity/receive_vibration_condition"),
+				mcreator, L10N.t("elementgui.living_entity.receive_vibration_condition"),
+				AbstractProcedureSelector.Side.SERVER, true, VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/vibrationX:number/vibrationY:number/vibrationZ:number")).setDefaultName(
+				L10N.t("condition.common.true")).makeInline();
+		onReceivedVibration = new ProcedureSelector(this.withEntry("entity/on_received_vibration"), mcreator,
+				L10N.t("elementgui.living_entity.on_received_vibration"), AbstractProcedureSelector.Side.SERVER, true,
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/immediatesourceentity:entity/vibrationX:number/vibrationY:number/vibrationZ:number/distance:number")).makeInline();
 
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
@@ -419,6 +440,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		JPanel pane7 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane8 = new JPanel(new BorderLayout(0, 0));
 		JPanel animationsPane = new JPanel(new BorderLayout(0, 0));
+		JPanel vibrationPane = new JPanel(new BorderLayout(0, 0));
 
 		JPanel subpane1 = new JPanel(new GridLayout(12, 2, 0, 2));
 
@@ -901,22 +923,57 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		pane7.setOpaque(false);
 		pane7.setOpaque(false);
 
+		JPanel vibrationProps = new JPanel(new GridLayout(2, 2, 0, 2));
+		vibrationProps.setOpaque(false);
+
+		sensitiveToVibration.setOpaque(false);
+		sensitiveToVibration.addActionListener(e -> enableOrDisableFields());
+
+		vibrationProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/sensitive_to_vibration"),
+				L10N.label("elementgui.living_entity.sensitive_to_vibration")));
+		vibrationProps.add(sensitiveToVibration);
+
+		vibrationProps.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/vibrational_events"),
+				L10N.label("elementgui.living_entity.vibrational_events")));
+		vibrationProps.add(vibrationalEvents);
+
+		vibrationalEvents.setPreferredSize(new Dimension(280, 0));
+
+		JPanel vibrationEvents = new JPanel(new BorderLayout(0, 2));
+		JPanel vibrationEventsBottom = new JPanel(new GridLayout(2, 1, 0, 2));
+
+		vibrationEventsBottom.setOpaque(false);
+		vibrationEventsBottom.add(canReceiveVibrationCondition);
+		vibrationEventsBottom.add(onReceivedVibration);
+
+		vibrationEvents.setOpaque(false);
+		vibrationEvents.add("North", vibrationSensitivityRadius);
+		vibrationEvents.add("Center", vibrationEventsBottom);
+
+		JComponent vibrationMerger = PanelUtils.northAndCenterElement(vibrationProps, vibrationEvents, 2, 2);
+		vibrationPane.add("Center", PanelUtils.totalCenterInPanel(vibrationMerger));
+		vibrationPane.setOpaque(false);
+
 		mobName.setValidator(
 				new TextFieldValidator(mobName, L10N.t("elementgui.living_entity.error_entity_needs_name")));
 		mobName.enableRealtimeValidation();
 
 		pane1.setOpaque(false);
 
-		addPage(L10N.t("elementgui.living_entity.page_visual"), pane2);
-		addPage(L10N.t("elementgui.living_entity.page_model_layers"), pane8, false);
+		addPage(L10N.t("elementgui.living_entity.page_visual"), pane2).validate(mobModelTexture).validate(mobName);
+		addPage(L10N.t("elementgui.living_entity.page_model_layers"), pane8, false).lazyValidate(
+				modelLayers::getValidationResult);
 		addPage(L10N.t("elementgui.living_entity.page_animations"), animationsPane, false);
 		addPage(L10N.t("elementgui.living_entity.page_behaviour"), pane1);
 		addPage(L10N.t("elementgui.living_entity.page_sound"), pane6);
 		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel, false);
 		addPage(L10N.t("elementgui.common.page_inventory"), pane7);
+		addPage(L10N.t("elementgui.living_entity.page_vibration"), vibrationPane);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
-		addPage(L10N.t("elementgui.living_entity.page_ai_and_goals"), pane3);
-		addPage(L10N.t("elementgui.living_entity.page_spawning"), pane5);
+		addPage(L10N.t("elementgui.living_entity.page_ai_and_goals"), pane3).lazyValidate(
+				() -> new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
+						compileNote -> "Living entity AI builder: " + compileNote));
+		addPage(L10N.t("elementgui.living_entity.page_spawning"), pane5).validate(restrictionBiomes);
 
 		if (!isEditingMode()) {
 			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "MISC")));
@@ -959,6 +1016,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		mobModelTexture.reload();
 
+		vibrationSensitivityRadius.refreshListKeepSelected();
+		canReceiveVibrationCondition.refreshListKeepSelected();
+		onReceivedVibration.refreshListKeepSelected();
+
 		ComboBoxUtil.updateComboBoxContents(mobModel, ListUtils.merge(Arrays.asList(builtinmobmodels),
 				Model.getModels(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
@@ -970,20 +1031,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 						.collect(Collectors.toList())), "Default item");
 
 		disableMobModelCheckBoxListener = false;
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0) {
-			return new AggregatedValidationResult(mobModelTexture, mobName);
-		} else if (page == 1) {
-			return modelLayers.getValidationResult();
-		} else if (page == 8) {
-			return new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
-					compileNote -> "Living entity AI builder: " + compileNote);
-		} else if (page == 9) {
-			return new AggregatedValidationResult(restrictionBiomes);
-		}
-		return new AggregatedValidationResult.PASS();
 	}
 
 	private void enableOrDisableFields() {
@@ -1015,6 +1062,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		bossBarType.setEnabled(isBoss.isSelected());
 
 		rangedAttackItem.setEnabled("Default item".equals(rangedItemType.getSelectedItem()));
+
+		vibrationSensitivityRadius.setEnabled(sensitiveToVibration.isSelected());
+		vibrationalEvents.setEnabled(sensitiveToVibration.isSelected());
+		canReceiveVibrationCondition.setEnabled(sensitiveToVibration.isSelected());
+		onReceivedVibration.setEnabled(sensitiveToVibration.isSelected());
 	}
 
 	@Override public void openInEditingMode(LivingEntity livingEntity) {
@@ -1123,6 +1175,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		entityDataList.setEntries(livingEntity.entityDataEntries);
 
 		creativeTabs.setListElements(livingEntity.creativeTabs);
+		sensitiveToVibration.setSelected(livingEntity.sensitiveToVibration);
+		vibrationSensitivityRadius.setSelectedProcedure(livingEntity.vibrationSensitivityRadius);
+		vibrationalEvents.setListElements(livingEntity.vibrationalEvents);
+		canReceiveVibrationCondition.setSelectedProcedure(livingEntity.canReceiveVibrationCondition);
+		onReceivedVibration.setSelectedProcedure(livingEntity.onReceivedVibration);
 
 		Model model = livingEntity.getEntityModel();
 		if (model != null)
@@ -1236,6 +1293,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.inventoryStackSize = (int) inventoryStackSize.getValue();
 		livingEntity.guiBoundTo = guiBoundTo.getEntry();
 		livingEntity.entityDataEntries = entityDataList.getEntries();
+		livingEntity.sensitiveToVibration = sensitiveToVibration.isSelected();
+		livingEntity.vibrationSensitivityRadius = vibrationSensitivityRadius.getSelectedProcedure();
+		livingEntity.vibrationalEvents = vibrationalEvents.getListElements();
+		livingEntity.canReceiveVibrationCondition = canReceiveVibrationCondition.getSelectedProcedure();
+		livingEntity.onReceivedVibration = onReceivedVibration.getSelectedProcedure();
 		for (int i = 0; i < livingEntity.raidSpawnsCount.length; i++)
 			livingEntity.raidSpawnsCount[i] = (int) raidSpawnsCount[i].getValue();
 		livingEntity.modelLayers = modelLayers.getEntries();

@@ -43,11 +43,10 @@ import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -68,6 +67,7 @@ import java.util.stream.Collectors;
 public class ToolGUI extends ModElementGUI<Tool> {
 
 	private TextureSelectionButton texture;
+	private TextureSelectionButton guiTexture;
 
 	private final JSpinner efficiency = new JSpinner(new SpinnerNumberModel(4, 0, 128000, 0.5));
 	private final JSpinner enchantability = new JSpinner(new SpinnerNumberModel(2, 1, 128000, 1));
@@ -176,17 +176,24 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 		texture.setOpaque(false);
 
+		guiTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
+		guiTexture.setOpaque(false);
+
 		immuneToFire.setOpaque(false);
 		stayInGridWhenCrafting.setOpaque(false);
+		stayInGridWhenCrafting.addActionListener(e -> updateCraftingSettings());
 		damageOnCrafting.setOpaque(false);
 
-		JPanel rent = new JPanel();
-		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
-
+		JPanel rent = new JPanel(new GridLayout(-1, 2, 2, 2));
 		rent.setOpaque(false);
-		rent.add(PanelUtils.join(
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")),
-				PanelUtils.join(renderType)));
+
+		rent.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
+		rent.add(renderType);
+
+		rent.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/gui_texture"),
+				L10N.label("elementgui.common.item_gui_texture")));
+		rent.add(PanelUtils.centerInPanel(guiTexture));
 
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));
 		renderType.setPreferredSize(new Dimension(350, 42));
@@ -210,7 +217,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		ComponentUtils.deriveFont(name, 16);
 
-		blockingModel.setFont(blockingModel.getFont().deriveFont(16.0f));
 		blockingModel.setRenderer(new ModelComboBoxRenderer());
 		blockingModel.setEnabled(false);
 
@@ -269,12 +275,14 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		selp.add(immuneToFire);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item"),
-				L10N.label("elementgui.tool.stays_in_grid_when_crafting")));
+				L10N.label("elementgui.item.container_item")));
 		selp.add(stayInGridWhenCrafting);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/container_item_damage"),
-				L10N.label("elementgui.tool.damaged_on_crafting")));
+				L10N.label("elementgui.item.container_item_damage")));
 		selp.add(damageOnCrafting);
+
+		usageCount.addChangeListener(e -> updateCraftingSettings());
 
 		blocksAffected.setEnabled(false);
 
@@ -298,15 +306,15 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		events.setOpaque(false);
 		pane3.add(PanelUtils.totalCenterInPanel(events));
 
-		texture.setValidator(new TileHolderValidator(texture));
+		texture.setValidator(new TextureSelectionButtonValidator(texture));
 
 		page1group.addValidationElement(texture);
 
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.tool.needs_a_name")));
 		name.enableRealtimeValidation();
 
-		addPage(L10N.t("elementgui.common.page_visual"), pane2);
-		addPage(L10N.t("elementgui.common.page_properties"), pane4);
+		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(page1group);
+		addPage(L10N.t("elementgui.common.page_properties"), pane4).validate(name);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane3);
 
 		if (!isEditingMode()) {
@@ -316,7 +324,12 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			name.setText(readableNameFromModElement);
 		}
 
+		updateCraftingSettings();
 		updateFields();
+	}
+
+	private void updateCraftingSettings() {
+		damageOnCrafting.setEnabled(stayInGridWhenCrafting.isSelected() && ((int) usageCount.getValue() > 0));
 	}
 
 	private void updateFields() {
@@ -385,18 +398,11 @@ public class ToolGUI extends ModElementGUI<Tool> {
 						.collect(Collectors.toList())));
 	}
 
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 1)
-			return new AggregatedValidationResult(name);
-		else if (page == 0)
-			return new AggregatedValidationResult(page1group);
-		return new AggregatedValidationResult.PASS();
-	}
-
 	@Override public void openInEditingMode(Tool tool) {
 		creativeTabs.setListElements(tool.creativeTabs);
 		name.setText(tool.name);
 		texture.setTexture(tool.texture);
+		guiTexture.setTexture(tool.guiTexture);
 		toolType.setSelectedItem(tool.toolType);
 		blockDropsTier.setSelectedItem(tool.blockDropsTier);
 		additionalDropCondition.setSelectedProcedure(tool.additionalDropCondition);
@@ -422,6 +428,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		blocksAffected.setListElements(tool.blocksAffected);
 
+		updateCraftingSettings();
 		updateFields();
 
 		if (toolType.getSelectedItem() != null)
@@ -466,6 +473,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.damageOnCrafting = damageOnCrafting.isSelected();
 
 		tool.texture = texture.getTextureHolder();
+		tool.guiTexture = guiTexture.getTextureHolder();
 
 		Model.Type modelType = (Objects.requireNonNull(renderType.getSelectedItem())).getType();
 		tool.renderType = 0;

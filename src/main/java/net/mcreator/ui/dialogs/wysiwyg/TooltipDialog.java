@@ -55,7 +55,7 @@ public class TooltipDialog extends AbstractWYSIWYGDialog<Tooltip> {
 
 		StringProcedureSelector tooltipText = new StringProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/tooltip_text"), editor.mcreator, textField, 200,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		tooltipText.refreshList();
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
@@ -87,9 +87,9 @@ public class TooltipDialog extends AbstractWYSIWYGDialog<Tooltip> {
 			displayCondition.setSelectedProcedure(tooltip.displayCondition);
 		}
 
-		cancel.addActionListener(arg01 -> setVisible(false));
+		cancel.addActionListener(arg01 -> dispose());
 		ok.addActionListener(arg01 -> {
-			setVisible(false);
+			dispose();
 			StringProcedure textProcedure = tooltipText.getSelectedProcedure();
 
 			if (tooltip == null) {

@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.types.Biome;
 import net.mcreator.minecraft.DataListEntry;
@@ -28,6 +29,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -39,7 +41,6 @@ import net.mcreator.ui.minecraft.DefaultFeaturesListField;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.spawntypes.JSpawnEntriesList;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
@@ -150,6 +151,12 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		treeStem = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		treeBranch = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		treeFruits = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
+
+		if (!isEditingMode()) {
+			groundBlock.setBlock(new MItemBlock(mcreator.getWorkspace(), "Blocks.GRASS"));
+			undergroundBlock.setBlock(new MItemBlock(mcreator.getWorkspace(), "Blocks.DIRT#0"));
+			underwaterBlock.setBlock(new MItemBlock(mcreator.getWorkspace(), "Blocks.GRAVEL"));
+		}
 
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(customTrees);
@@ -518,9 +525,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		treeStem.setValidator(new MCItemHolderValidator(treeStem, customTrees));
 		treeBranch.setValidator(new MCItemHolderValidator(treeBranch, customTrees));
 
-		addPage(L10N.t("elementgui.biome.general_properties"), pane4);
-		addPage(L10N.t("elementgui.biome.biome_generation"), pane5);
-		addPage(L10N.t("elementgui.biome.features"), pane3);
+		addPage(L10N.t("elementgui.biome.general_properties"), pane4).validate(page1group);
+		addPage(L10N.t("elementgui.biome.biome_generation"), pane5).validate(page2group);
+		addPage(L10N.t("elementgui.biome.features"), pane3).validate(page3group);
 		addPage(L10N.t("elementgui.biome.structures"), pane2);
 		addPage(L10N.t("elementgui.biome.entity_spawning"), pane1, false);
 		addPage(L10N.t("elementgui.biome.effects"), effectsPane);
@@ -540,16 +547,6 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		super.reloadDataLists();
 		ComboBoxUtil.updateComboBoxContents(particleToSpawn, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 		spawnEntries.reloadDataLists();
-	}
-
-	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 0)
-			return new AggregatedValidationResult(page1group);
-		else if (page == 1)
-			return new AggregatedValidationResult(page2group);
-		else if (page == 2)
-			return new AggregatedValidationResult(page3group);
-		return new AggregatedValidationResult.PASS();
 	}
 
 	private void updateBiomeTreesForm() {
