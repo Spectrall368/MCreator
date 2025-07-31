@@ -1,3 +1,0 @@
-[
-    ".zRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * limbSwingAmount;"
-]

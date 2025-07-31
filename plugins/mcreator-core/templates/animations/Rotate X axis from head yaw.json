@@ -1,3 +1,0 @@
-[
-    ".xRot = netHeadYaw / (180F / (float)Math.PI);"
-]
