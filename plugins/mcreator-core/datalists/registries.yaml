@@ -1,0 +1,8 @@
+- ATTRIBUTE:
+  readable_name: "Attribute"
+- CONFIGURED_FEATURE:
+  readable_name: "Configured feature"
+- STRUCTURE:
+  readable_name: "Structure"
+- ENTITY_TYPE:
+  readable_name: "Entity type"

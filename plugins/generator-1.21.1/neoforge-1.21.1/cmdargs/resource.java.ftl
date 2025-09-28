@@ -1,0 +1,1 @@
+.then(Commands.argument("${field$name}", ResourceArgument.resource(event.getBuildContext(), ${generator.map(field$registry, "registries")}))${statement$args})

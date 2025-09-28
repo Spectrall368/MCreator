@@ -1,0 +1,1 @@
+(ResourceArgument.getResource(arguments, "${field$param}", ${generator.map(field$registry, "registries")})).value()
