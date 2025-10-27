@@ -3125,6 +3125,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/validation/component/VTextField.html#enableRealtimeValidation()" class="member-name-link">enableRealtimeValidation()</a> - Method in class net.mcreator.ui.validation.component.<a href="net/mcreator/ui/validation/component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="net/mcreator/ui/minecraft/SoundSelector.html#enableRealTimeValidation()" class="member-name-link">enableRealTimeValidation()</a> - Method in class net.mcreator.ui.minecraft.<a href="net/mcreator/ui/minecraft/SoundSelector.html" title="class in net.mcreator.ui.minecraft">SoundSelector</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/workspace/WorkspacePanel.html#enableRemoving()" class="member-name-link">enableRemoving()</a> - Method in class net.mcreator.ui.workspace.<a href="net/mcreator/ui/workspace/WorkspacePanel.html" title="class in net.mcreator.ui.workspace">WorkspacePanel</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/preferences/data/BlocklySection.html#enableTrashcan" class="member-name-link">enableTrashcan</a> - Variable in class net.mcreator.preferences.data.<a href="net/mcreator/preferences/data/BlocklySection.html" title="class in net.mcreator.preferences.data">BlocklySection</a></dt>
@@ -3581,8 +3583,6 @@ loadScripts(document, 'script');</script>
 <dt><a href="net/mcreator/ui/gradle/GradleConsole.html#exec(java.lang.String,net.mcreator.gradle.GradleTaskFinishedListener)" class="member-name-link">exec(String, GradleTaskFinishedListener)</a> - Method in class net.mcreator.ui.gradle.<a href="net/mcreator/ui/gradle/GradleConsole.html" title="class in net.mcreator.ui.gradle">GradleConsole</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/gradle/GradleConsole.html#exec(java.lang.String,net.mcreator.java.debug.JVMDebugClient)" class="member-name-link">exec(String, JVMDebugClient)</a> - Method in class net.mcreator.ui.gradle.<a href="net/mcreator/ui/gradle/GradleConsole.html" title="class in net.mcreator.ui.gradle">GradleConsole</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="net/mcreator/ui/gradle/GradleConsole.html#exec(java.lang.String,org.gradle.tooling.ProgressListener,net.mcreator.gradle.GradleTaskFinishedListener)" class="member-name-link">exec(String, ProgressListener, GradleTaskFinishedListener)</a> - Method in class net.mcreator.ui.gradle.<a href="net/mcreator/ui/gradle/GradleConsole.html" title="class in net.mcreator.ui.gradle">GradleConsole</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/blockly/ExtraTemplatesLinker.html#execute(freemarker.core.Environment,java.util.Map,freemarker.template.TemplateModel%5B%5D,freemarker.template.TemplateDirectiveBody)" class="member-name-link">execute(Environment, Map, TemplateModel[], TemplateDirectiveBody)</a> - Method in record class net.mcreator.blockly.<a href="net/mcreator/blockly/ExtraTemplatesLinker.html" title="class in net.mcreator.blockly">ExtraTemplatesLinker</a></dt>
 <dd>&nbsp;</dd>
@@ -5807,9 +5807,9 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/generator/GeneratorConfiguration.html#getGeneratorSubVersion()" class="member-name-link">getGeneratorSubVersion()</a> - Method in class net.mcreator.generator.<a href="net/mcreator/generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="net/mcreator/generator/Generator.html#getGlobalTemplatesListForDefinition(java.util.Map,boolean,java.util.concurrent.atomic.AtomicInteger)" class="member-name-link">getGlobalTemplatesListForDefinition(Map&lt;?, ?&gt;, boolean, AtomicInteger)</a> - Method in class net.mcreator.generator.<a href="net/mcreator/generator/Generator.html" title="class in net.mcreator.generator">Generator</a></dt>
+<dt><a href="net/mcreator/generator/Generator.html#getGlobalTemplatesListForDefinition(java.util.Map,java.util.concurrent.atomic.AtomicInteger)" class="member-name-link">getGlobalTemplatesListForDefinition(Map&lt;?, ?&gt;, AtomicInteger)</a> - Method in class net.mcreator.generator.<a href="net/mcreator/generator/Generator.html" title="class in net.mcreator.generator">Generator</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="net/mcreator/generator/Generator.html#getGlobalTemplatesListForModElementType(net.mcreator.element.ModElementType,boolean,java.util.concurrent.atomic.AtomicInteger)" class="member-name-link">getGlobalTemplatesListForModElementType(ModElementType&lt;?&gt;, boolean, AtomicInteger)</a> - Method in class net.mcreator.generator.<a href="net/mcreator/generator/Generator.html" title="class in net.mcreator.generator">Generator</a></dt>
+<dt><a href="net/mcreator/generator/Generator.html#getGlobalTemplatesListForModElementType(net.mcreator.element.ModElementType,java.util.concurrent.atomic.AtomicInteger)" class="member-name-link">getGlobalTemplatesListForModElementType(ModElementType&lt;?&gt;, AtomicInteger)</a> - Method in class net.mcreator.generator.<a href="net/mcreator/generator/Generator.html" title="class in net.mcreator.generator">Generator</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/workspace/elements/VariableTypeLoader.html#getGlobalVariableTypes(net.mcreator.generator.GeneratorConfiguration)" class="member-name-link">getGlobalVariableTypes(GeneratorConfiguration)</a> - Method in class net.mcreator.workspace.elements.<a href="net/mcreator/workspace/elements/VariableTypeLoader.html" title="class in net.mcreator.workspace.elements">VariableTypeLoader</a></dt>
 <dd>&nbsp;</dd>
@@ -6324,7 +6324,7 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/generator/GeneratorUtils.html#getModAssetsRoot(net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration)" class="member-name-link">getModAssetsRoot(Workspace, GeneratorConfiguration)</a> - Static method in class net.mcreator.generator.<a href="net/mcreator/generator/GeneratorUtils.html" title="class in net.mcreator.generator">GeneratorUtils</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="net/mcreator/generator/Generator.html#getModBaseGeneratorTemplatesList(boolean)" class="member-name-link">getModBaseGeneratorTemplatesList(boolean)</a> - Method in class net.mcreator.generator.<a href="net/mcreator/generator/Generator.html" title="class in net.mcreator.generator">Generator</a></dt>
+<dt><a href="net/mcreator/generator/Generator.html#getModBaseGeneratorTemplatesList()" class="member-name-link">getModBaseGeneratorTemplatesList()</a> - Method in class net.mcreator.generator.<a href="net/mcreator/generator/Generator.html" title="class in net.mcreator.generator">Generator</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/generator/GeneratorConfiguration.html#getModDataRoot()" class="member-name-link">getModDataRoot()</a> - Method in class net.mcreator.generator.<a href="net/mcreator/generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a></dt>
 <dd>&nbsp;</dd>
@@ -14272,9 +14272,17 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/minecraft/TextureSelectionButton.html#requireValue()" class="member-name-link">requireValue()</a> - Method in class net.mcreator.ui.minecraft.<a href="net/mcreator/ui/minecraft/TextureSelectionButton.html" title="class in net.mcreator.ui.minecraft">TextureSelectionButton</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="net/mcreator/ui/minecraft/MCItemHolder.html#requireValue(java.lang.String)" class="member-name-link">requireValue(String)</a> - Method in class net.mcreator.ui.minecraft.<a href="net/mcreator/ui/minecraft/MCItemHolder.html" title="class in net.mcreator.ui.minecraft">MCItemHolder</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="net/mcreator/ui/minecraft/SoundSelector.html#requireValue(java.lang.String)" class="member-name-link">requireValue(String)</a> - Method in class net.mcreator.ui.minecraft.<a href="net/mcreator/ui/minecraft/SoundSelector.html" title="class in net.mcreator.ui.minecraft">SoundSelector</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/minecraft/TextureComboBox.html#requireValue(java.lang.String)" class="member-name-link">requireValue(String)</a> - Method in class net.mcreator.ui.minecraft.<a href="net/mcreator/ui/minecraft/TextureComboBox.html" title="class in net.mcreator.ui.minecraft">TextureComboBox</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/minecraft/TextureSelectionButton.html#requireValue(java.lang.String)" class="member-name-link">requireValue(String)</a> - Method in class net.mcreator.ui.minecraft.<a href="net/mcreator/ui/minecraft/TextureSelectionButton.html" title="class in net.mcreator.ui.minecraft">TextureSelectionButton</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="net/mcreator/ui/validation/component/VTextField.html#requireValue(java.lang.String)" class="member-name-link">requireValue(String)</a> - Method in class net.mcreator.ui.validation.component.<a href="net/mcreator/ui/validation/component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="net/mcreator/ui/minecraft/MCItemHolder.html#requireValue(java.lang.String,boolean)" class="member-name-link">requireValue(String, boolean)</a> - Method in class net.mcreator.ui.minecraft.<a href="net/mcreator/ui/minecraft/MCItemHolder.html" title="class in net.mcreator.ui.minecraft">MCItemHolder</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/gradle/GradleConsole.html#rerunFlag" class="member-name-link">rerunFlag</a> - Variable in class net.mcreator.ui.gradle.<a href="net/mcreator/ui/gradle/GradleConsole.html" title="class in net.mcreator.ui.gradle">GradleConsole</a></dt>
 <dd>&nbsp;</dd>
@@ -14846,6 +14854,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="net/mcreator/ui/views/editor/image/canvas/Selection.html#setEditStarted(boolean)" class="member-name-link">setEditStarted(boolean)</a> - Method in class net.mcreator.ui.views.editor.image.canvas.<a href="net/mcreator/ui/views/editor/image/canvas/Selection.html" title="class in net.mcreator.ui.views.editor.image.canvas">Selection</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/workspace/misc/CreativeTabsOrder.html#setElementOrderInTab(java.lang.String,java.util.List)" class="member-name-link">setElementOrderInTab(String, List&lt;ModElement&gt;)</a> - Method in class net.mcreator.workspace.misc.<a href="net/mcreator/workspace/misc/CreativeTabsOrder.html" title="class in net.mcreator.workspace.misc">CreativeTabsOrder</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="net/mcreator/ui/validation/validators/MCItemHolderValidator.html#setEmptyMessage(java.lang.String)" class="member-name-link">setEmptyMessage(String)</a> - Method in class net.mcreator.ui.validation.validators.<a href="net/mcreator/ui/validation/validators/MCItemHolderValidator.html" title="class in net.mcreator.ui.validation.validators">MCItemHolderValidator</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="net/mcreator/ui/validation/validators/TextureSelectionButtonValidator.html#setEmptyMessage(java.lang.String)" class="member-name-link">setEmptyMessage(String)</a> - Method in class net.mcreator.ui.validation.validators.<a href="net/mcreator/ui/validation/validators/TextureSelectionButtonValidator.html" title="class in net.mcreator.ui.validation.validators">TextureSelectionButtonValidator</a></dt>
 <dd>&nbsp;</dd>
