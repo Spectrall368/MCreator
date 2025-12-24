@@ -226,7 +226,7 @@ public abstract class MCreator extends MCreatorFrame {
 		}
 	}
 
-	public void initializeMCreator() {
+	private void initializeMCreator() {
 		setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
 		if (MCreatorVersionNumber.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {
@@ -321,7 +321,10 @@ public abstract class MCreator extends MCreatorFrame {
 
 			workspace.close();
 
-			dispose(); // close the window
+			try { // in case the window was already disposed by some other source to prevent crashes here
+				dispose(); // close the window
+			} catch (Exception ignored) {
+			}
 
 			application.getOpenMCreators().remove(this);
 

@@ -40,6 +40,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.itemanimations.JItemAnimationList;
 import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
@@ -47,8 +48,6 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TextureSelectionButtonValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -75,7 +74,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private StringListProcedureSelector specialInformation;
 
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 1, 99, 1));
-	private final VTextField name = new VTextField(20);
+	private final VTextField name = new VTextField(20).requireValue("elementgui.item.error_item_needs_name")
+			.enableRealtimeValidation();
 	private final TranslatedComboBox rarity = new TranslatedComboBox(
 			//@formatter:off
 			Map.entry("COMMON", "elementgui.common.rarity_common"),
@@ -93,6 +93,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner damageCount = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 1));
 
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox isPiglinCurrency = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox destroyAnyBlock = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
@@ -127,6 +128,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private ProcedureSelector onEntitySwing;
 	private ProcedureSelector onDroppedByPlayer;
 	private ProcedureSelector onFinishUsingItem;
+	private ProcedureSelector everyTickWhileUsing;
+	private ProcedureSelector onItemEntityDestroyed;
 
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page5group = new ValidationGroup();
@@ -159,12 +162,16 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	// Music disc parameters
 	private final JCheckBox isMusicDisc = L10N.checkbox("elementgui.common.enable");
-	private final SoundSelector musicDiscMusic = new SoundSelector(mcreator);
-	private final VTextField musicDiscDescription = new VTextField(20);
+	private final SoundSelector musicDiscMusic = new SoundSelector(mcreator).requireValue(
+			"elementgui.item.musicdisc.error_needs_sound").enableRealTimeValidation();
+	private final VTextField musicDiscDescription = new VTextField(20).requireValue(
+			"elementgui.item.musicdisc.error_disc_needs_description").enableRealtimeValidation();
 	private final JSpinner musicDiscLengthInTicks = new JSpinner(new SpinnerNumberModel(100, 1, 20 * 3600, 1));
 	private final JSpinner musicDiscAnalogOutput = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 
 	private ModElementListField providedBannerPatterns;
+
+	private JItemAnimationList animations;
 
 	public ItemGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -204,6 +211,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onFinishUsingItem = new ProcedureSelector(this.withEntry("item/when_finish_using"), mcreator,
 				L10N.t("elementgui.item.player_useitem_finish"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		everyTickWhileUsing = new ProcedureSelector(this.withEntry("item/every_tick_while_using"), mcreator,
+				L10N.t("elementgui.item.player_useitem_tick"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
+		onItemEntityDestroyed = new ProcedureSelector(this.withEntry("item/on_item_entity_destroyed"), mcreator,
+				L10N.t("elementgui.item.on_item_entity_destroyed"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/damagesource:damagesource"));
 		onRangedItemUsed = new ProcedureSelector(this.withEntry("item/when_used"), mcreator,
 				L10N.t("elementgui.item.event_on_use"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
@@ -225,6 +238,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		guiBoundTo.setDefaultText(L10N.t("elementgui.common.no_gui"));
 
 		providedBannerPatterns = new ModElementListField(mcreator, ModElementType.BANNERPATTERN);
+
+		animations = new JItemAnimationList(mcreator, this);
 
 		guiBoundTo.addEntrySelectedListener(e -> {
 			if (!isEditingMode()) {
@@ -250,8 +265,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel advancedProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel rangedPanel = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
+		JPanel animationsPane = new JPanel(new BorderLayout(0, 0));
 
-		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		texture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM)).requireValue(
+				"elementgui.item.error_item_needs_texture");
 		texture.setOpaque(false);
 
 		guiTexture = new TextureSelectionButton(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
@@ -277,6 +294,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
+		renderType.addActionListener(e -> updateTextureOptions());
+
 		rent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.item.item_3d_model"), 0, 0, getFont().deriveFont(12.0f),
@@ -296,7 +315,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		cipp.setOpaque(false);
 		cipp.add("Center", customProperties);
 
-		JPanel subpane2 = new JPanel(new GridLayout(15, 2, 65, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(16, 2, 65, 2));
 
 		ComponentUtils.deriveFont(name, 16);
 
@@ -336,6 +355,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		subpane2.add(immuneToFire);
 
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/is_piglin_currency"),
+				L10N.label("elementgui.item.is_piglin_currency")));
+		subpane2.add(isPiglinCurrency);
+
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/can_destroy_any_block"),
 				L10N.label("elementgui.item.can_destroy_any_block")));
 		subpane2.add(destroyAnyBlock);
@@ -366,6 +389,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		damageCount.setOpaque(false);
 		damageCount.addChangeListener(e -> updateCraftingSettings());
 		immuneToFire.setOpaque(false);
+		isPiglinCurrency.setOpaque(false);
 		destroyAnyBlock.setOpaque(false);
 		stayInGridWhenCrafting.setOpaque(false);
 		stayInGridWhenCrafting.addActionListener(e -> updateCraftingSettings());
@@ -426,7 +450,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		advancedProperties.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(4, 3, 5, 5));
+		JPanel events = new JPanel(new GridLayout(-1, 4, 5, 5));
 		events.setOpaque(false);
 		events.add(onRightClickedInAir);
 		events.add(onRightClickedOnBlock);
@@ -438,6 +462,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		events.add(onEntitySwing);
 		events.add(onDroppedByPlayer);
 		events.add(onFinishUsingItem);
+		events.add(everyTickWhileUsing);
+		events.add(onItemEntityDestroyed);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 
@@ -451,6 +477,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		inventoryProperties.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/bind_gui"), L10N.label("elementgui.item.bind_gui")));
 		inventoryProperties.add(guiBoundTo);
+
+		guiBoundTo.addEntrySelectedListener(e -> refreshGUIProperties());
+		refreshGUIProperties();
 
 		inventoryProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/inventory_size"),
 				L10N.label("elementgui.item.inventory_size")));
@@ -550,27 +579,23 @@ public class ItemGUI extends ModElementGUI<Item> {
 						PanelUtils.northAndCenterElement(inventoryProperties, musicDiscBannerProperties)),
 				PanelUtils.pullElementUp(rangedPanel), 10, 10)));
 
-		texture.setValidator(new TextureSelectionButtonValidator(texture));
-
 		page1group.addValidationElement(texture);
-
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.item.error_item_needs_name")));
-		name.enableRealtimeValidation();
-
-		musicDiscDescription.setValidator(new TextFieldValidator(musicDiscDescription,
-				L10N.t("elementgui.item.musicdisc.error_disc_needs_description")));
-		musicDiscDescription.enableRealtimeValidation();
-
-		musicDiscMusic.getVTextField().setValidator(new TextFieldValidator(musicDiscMusic.getVTextField(),
-				L10N.t("elementgui.item.musicdisc.error_needs_sound")));
-		musicDiscMusic.getVTextField().enableRealtimeValidation();
 
 		page5group.addValidationElement(musicDiscDescription);
 		page5group.addValidationElement(musicDiscMusic.getVTextField());
 
+		JComponent animationsList = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/model_animations"),
+						L10N.label("elementgui.item.model_animations")), animations);
+		animationsList.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		animationsPane.setOpaque(false);
+		animationsPane.add("Center", animationsList);
+
 		addPage(L10N.t("elementgui.common.page_visual"), pane2).validate(page1group);
 		addPage(L10N.t("elementgui.item.page_item_states"), cipp, false).lazyValidate(
 				customProperties::getValidationResult);
+		addPage(L10N.t("elementgui.item.page_animations"), animationsPane, false);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(name);
 		addPage(L10N.t("elementgui.item.food_properties"), foodProperties);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties).validate(page5group);
@@ -580,6 +605,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
+	}
+
+	private void updateTextureOptions() {
+		Model model = renderType.getSelectedItem();
+		animations.setEnabled(model != null && model.getType() == Model.Type.JAVA);
 	}
 
 	private void updateCraftingSettings() {
@@ -644,26 +674,41 @@ public class ItemGUI extends ModElementGUI<Item> {
 		}
 	}
 
+	private void refreshGUIProperties() {
+		boolean isGuiBoundToEmpty = !guiBoundTo.isEmpty();
+
+		inventorySize.setEnabled(isGuiBoundToEmpty);
+		inventoryStackSize.setEnabled(isGuiBoundToEmpty);
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		onRightClickedInAir.refreshListKeepSelected();
-		onCrafted.refreshListKeepSelected();
-		onRightClickedOnBlock.refreshListKeepSelected();
-		onEntityHitWith.refreshListKeepSelected();
-		onItemInInventoryTick.refreshListKeepSelected();
-		onItemInUseTick.refreshListKeepSelected();
-		onStoppedUsing.refreshListKeepSelected();
-		onEntitySwing.refreshListKeepSelected();
-		onDroppedByPlayer.refreshListKeepSelected();
-		onFinishUsingItem.refreshListKeepSelected();
-		specialInformation.refreshListKeepSelected();
-		glowCondition.refreshListKeepSelected();
-		onRangedItemUsed.refreshListKeepSelected();
-		rangedUseCondition.refreshListKeepSelected();
+
+		AbstractProcedureSelector.ReloadContext context = AbstractProcedureSelector.ReloadContext.create(
+				mcreator.getWorkspace());
+
+		onRightClickedInAir.refreshListKeepSelected(context);
+		onCrafted.refreshListKeepSelected(context);
+		onRightClickedOnBlock.refreshListKeepSelected(context);
+		onEntityHitWith.refreshListKeepSelected(context);
+		onItemInInventoryTick.refreshListKeepSelected(context);
+		onItemInUseTick.refreshListKeepSelected(context);
+		onStoppedUsing.refreshListKeepSelected(context);
+		onEntitySwing.refreshListKeepSelected(context);
+		onDroppedByPlayer.refreshListKeepSelected(context);
+		onFinishUsingItem.refreshListKeepSelected(context);
+		everyTickWhileUsing.refreshListKeepSelected(context);
+		onItemEntityDestroyed.refreshListKeepSelected(context);
+		specialInformation.refreshListKeepSelected(context);
+		glowCondition.refreshListKeepSelected(context);
+		onRangedItemUsed.refreshListKeepSelected(context);
+		rangedUseCondition.refreshListKeepSelected(context);
 
 		ComboBoxUtil.updateComboBoxContents(projectile, ElementUtil.loadArrowProjectiles(mcreator.getWorkspace()));
 
 		customProperties.reloadDataLists();
+
+		animations.reloadDataLists();
 
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(ItemGUI.builtinitemmodels),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
@@ -693,6 +738,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		damageCount.setValue(item.damageCount);
 		recipeRemainder.setBlock(item.recipeRemainder);
 		immuneToFire.setSelected(item.immuneToFire);
+		isPiglinCurrency.setSelected(item.isPiglinCurrency);
 		destroyAnyBlock.setSelected(item.destroyAnyBlock);
 		stayInGridWhenCrafting.setSelected(item.stayInGridWhenCrafting);
 		damageOnCrafting.setSelected(item.damageOnCrafting);
@@ -707,6 +753,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		isMeat.setSelected(item.isMeat);
 		isAlwaysEdible.setSelected(item.isAlwaysEdible);
 		onFinishUsingItem.setSelectedProcedure(item.onFinishUsingItem);
+		everyTickWhileUsing.setSelectedProcedure(item.everyTickWhileUsing);
+		onItemEntityDestroyed.setSelectedProcedure(item.onItemEntityDestroyed);
 		nutritionalValue.setValue(item.nutritionalValue);
 		saturation.setValue(item.saturation);
 		animation.setSelectedItem(item.animation);
@@ -725,12 +773,14 @@ public class ItemGUI extends ModElementGUI<Item> {
 		musicDiscAnalogOutput.setValue(item.musicDiscAnalogOutput);
 		providedBannerPatterns.setListElements(
 				item.providedBannerPatterns.stream().map(NonMappableElement::new).toList());
+		animations.setEntries(item.animations);
 
 		updateCraftingSettings();
 		updateFoodPanel();
 		updateRangedPanel();
 		updateMusicDiscBannerPanel();
 		onStoppedUsing.setEnabled((int) useDuration.getValue() > 0);
+		refreshGUIProperties();
 
 		Model model = item.getItemModel();
 		if (model != null)
@@ -752,6 +802,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.damageCount = (int) damageCount.getValue();
 		item.recipeRemainder = recipeRemainder.getBlock();
 		item.immuneToFire = immuneToFire.isSelected();
+		item.isPiglinCurrency = isPiglinCurrency.isSelected();
 		item.destroyAnyBlock = destroyAnyBlock.isSelected();
 		item.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
 		item.damageOnCrafting = damageOnCrafting.isSelected();
@@ -778,6 +829,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.isAlwaysEdible = isAlwaysEdible.isSelected();
 		item.animation = animation.getSelectedItem();
 		item.onFinishUsingItem = onFinishUsingItem.getSelectedProcedure();
+		item.everyTickWhileUsing = everyTickWhileUsing.getSelectedProcedure();
+		item.onItemEntityDestroyed = onItemEntityDestroyed.getSelectedProcedure();
 		item.eatResultItem = eatResultItem.getBlock();
 		item.enableRanged = enableRanged.isSelected();
 		item.projectileDisableAmmoCheck = projectileDisableAmmoCheck.isSelected();
@@ -801,6 +854,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		item.customProperties = customProperties.getProperties();
 		item.states = customProperties.getStates();
+
+		item.animations = animations.getEntries();
 
 		return item;
 	}

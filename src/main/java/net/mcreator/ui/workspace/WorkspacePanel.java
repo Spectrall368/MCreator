@@ -79,13 +79,15 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("EqualsBetweenInconvertibleTypes") public class WorkspacePanel extends AbstractMainWorkspacePanel {
 
 	private final FilterModel dml = new FilterModel();
+
+	private final JPopupMenu contextMenu;
 
 	public FolderElement currentFolder;
 
@@ -170,7 +172,7 @@ import java.util.stream.Collectors;
 				switchFolder(fe);
 		});
 
-		JPopupMenu contextMenu = new JPopupMenu();
+		contextMenu = new JPopupMenu();
 
 		list = new JSelectableList<>(dml);
 		list.setOpaque(false);
@@ -543,7 +545,7 @@ import java.util.stream.Collectors;
 					IconUtils.resize(type.getIcon(), 16, 16)));
 		}
 
-		filter.addActionListener(e -> filterPopup.show(filter, 0, 26));
+		filter.addActionListener(e -> filterPopup.show(filter, -1, 26));
 
 		JPopupMenu sortPopup = new JPopupMenu();
 		EventButtonGroup sortOne = new EventButtonGroup();
@@ -569,7 +571,7 @@ import java.util.stream.Collectors;
 		sortTwo.add(sortType);
 		sortPopup.add(sortType);
 
-		sort.addActionListener(e -> sortPopup.show(sort, 0, 26));
+		sort.addActionListener(e -> sortPopup.show(sort, -1, 26));
 
 		JPopupMenu viewPopup = new JPopupMenu();
 		viewPopup.add(tilesIcons);
@@ -717,7 +719,7 @@ import java.util.stream.Collectors;
 		addVerticalTab(L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this));
 		addVerticalTab(L10N.t("workspace.category.localization"), new WorkspacePanelLocalizations(this));
 
-		switchToVerticalTab("mods");
+		switchToVerticalTab(WorkspacePanel.WorkspacePanelMods.class);
 
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
 
@@ -1105,20 +1107,21 @@ import java.util.stream.Collectors;
 		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator()
 				.getModElementGeneratorTemplatesList(mu.getGeneratableElement());
 		List<GeneratorTemplate> modElementGlobalFiles = mcreator.getGenerator()
-				.getGlobalTemplatesListForModElementType(mu.getType(), false, new AtomicInteger());
+				.getGlobalTemplatesListForModElementType(mu.getType(), new AtomicInteger());
 		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator()
 				.getModElementListTemplates(mu.getGeneratableElement());
 
 		for (BaseType baseType : mu.getBaseTypesProvided()) {
 			modElementGlobalFiles.addAll(mcreator.getGenerator().getGlobalTemplatesListForDefinition(
 					mcreator.getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
-							.getBaseTypeDefinition(baseType), false, new AtomicInteger()));
+							.getBaseTypeDefinition(baseType), new AtomicInteger()));
 		}
 
 		if (modElementFiles.size() + modElementGlobalFiles.size() > 1)
-			new ModElementCodeDropdown(mcreator,
-					modElementFiles.stream().filter(e -> !(e instanceof ListTemplate)).toList(), modElementGlobalFiles,
-					modElementListFiles).show(component, x, y);
+			new ModElementCodeDropdown(mcreator, modElementFiles.stream().filter(e -> !(e instanceof ListTemplate))
+					.sorted((o1, o2) -> o1.getPathInWorkspace(mcreator.getWorkspace())
+							.compareToIgnoreCase(o2.getPathInWorkspace(mcreator.getWorkspace()))).toList(),
+					modElementGlobalFiles, modElementListFiles).show(component, x, y);
 		else if (modElementFiles.size() == 1)
 			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.getFirst().getFile());
 		else if (modElementGlobalFiles.size() == 1)
@@ -1291,6 +1294,7 @@ import java.util.stream.Collectors;
 			String searchInput = search.getText();
 
 			List<ModElementType<?>> metfilters = new ArrayList<>();
+			List<ModElementType<?>> excludedMetfilters = new ArrayList<>();
 			List<String> filters = new ArrayList<>();
 			List<String> keyWords = new ArrayList<>();
 
@@ -1299,23 +1303,37 @@ import java.util.stream.Collectors;
 				String pat = m.group(1);
 				if (pat.contains("f:")) {
 					pat = pat.replaceFirst("f:", "");
+
+					boolean isExcluded = pat.startsWith("!");
+					if (isExcluded) {
+						pat = pat.substring(1);
+					}
+
 					if (pat.equals("locked") || pat.equals("ok") || pat.equals("err"))
-						filters.add(pat);
+						filters.add((isExcluded ? "!" : "") + pat);
+
 					for (ModElementType<?> type : mcreator.getGeneratorStats().getSupportedModElementTypes()) {
 						if (pat.equals(type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))) {
-							metfilters.add(type);
+							if (isExcluded) {
+								excludedMetfilters.add(type);
+							} else {
+								metfilters.add(type);
+							}
 						}
 					}
-				} else
+				} else {
 					keyWords.add(pat.replace("\"", ""));
+				}
 			}
 
 			boolean flattenFolders = !searchInput.isEmpty();
 
+			Set<FolderElement> recursiveFolderChildren = new HashSet<>(currentFolder.getRecursiveFolderChildren());
+
 			filterItems.addAll(items.stream().filter(e -> e instanceof FolderElement)
 					.filter(item -> currentFolder.getDirectFolderChildren().contains(item) || (flattenFolders
-							&& currentFolder.getRecursiveFolderChildren().contains(item))).filter(item -> {
-						if (!filters.isEmpty() || !metfilters.isEmpty())
+							&& recursiveFolderChildren.contains(item))).filter(item -> {
+						if (!filters.isEmpty() || !metfilters.isEmpty() || !excludedMetfilters.isEmpty())
 							return false;
 
 						if (keyWords.isEmpty())
@@ -1336,56 +1354,76 @@ import java.util.stream.Collectors;
 				Collections.reverse(filterItems);
 			}
 
-			//noinspection FuseStreamOperations
-			List<ModElement> modElements = items.stream().filter(e -> e instanceof ModElement).map(e -> (ModElement) e)
-					.filter(item -> currentFolder.equals(item.getFolderPath()) || (flattenFolders
-							&& currentFolder.getRecursiveFolderChildren().stream()
-							.anyMatch(folder -> folder.equals(item.getFolderPath())))).filter(item -> {
-						if (keyWords.isEmpty())
+			final Predicate<ModElement> conditionSubFolders = item -> currentFolder.equals(item.getFolderPath()) || (
+					flattenFolders && recursiveFolderChildren.stream()
+							.anyMatch(folder -> folder.equals(item.getFolderPath())));
+
+			final Predicate<ModElement> conditionByKeyWord = item -> {
+				if (keyWords.isEmpty())
+					return true;
+
+				String lcItem = item.getName().toLowerCase(Locale.ENGLISH);
+				String lcItemReadable = item.getType().getReadableName().toLowerCase(Locale.ENGLISH);
+				for (String key : keyWords) {
+					boolean match = lcItem.contains(key.toLowerCase(Locale.ENGLISH)) || lcItemReadable.contains(
+							key.toLowerCase(Locale.ENGLISH));
+					if (match)
+						return true;
+				}
+
+				return false;
+			};
+
+			final Predicate<ModElement> conditionByFilters = item -> {
+				if (filters.isEmpty())
+					return true;
+
+				for (String f : filters) {
+					boolean isExcluded = f.startsWith("!");
+					String filterType = isExcluded ? f.substring(1) : f;
+
+					boolean matches = false;
+					switch (filterType) {
+					case "locked" -> matches = item.isCodeLocked();
+					case "ok" -> matches = item.doesCompile();
+					case "err" -> matches = !item.doesCompile();
+					}
+
+					if (isExcluded) {
+						if (matches)
+							return false;
+					} else {
+						if (matches)
 							return true;
+					}
+				}
+				return filters.stream().allMatch(f -> f.startsWith("!"));
+			};
 
-						for (String key : keyWords) {
-							boolean match = (item.getName().toLowerCase(Locale.ENGLISH)
-									.contains(key.toLowerCase(Locale.ENGLISH))) || (item.getType().getReadableName()
-									.toLowerCase(Locale.ENGLISH).contains(key.toLowerCase(Locale.ENGLISH)));
-							if (match)
-								return true;
-						}
-
+			final Predicate<ModElement> conditionMetFilters = item -> {
+				for (ModElementType<?> excludeType : excludedMetfilters)
+					if (item.getType() == excludeType)
 						return false;
-					}).filter(item -> {
-						if (filters.isEmpty())
-							return true;
 
-						for (String f : filters) {
-							switch (f) {
-							case "locked":
-								return item.isCodeLocked();
-							case "ok":
-								return item.doesCompile();
-							case "err":
-								return !item.doesCompile();
-							}
-						}
-						return false;
-					}).filter(item -> {
-						if (metfilters.isEmpty())
-							return true;
+				if (metfilters.isEmpty())
+					return true;
 
-						for (ModElementType<?> type : metfilters)
-							if (item.getType() == type)
-								return true;
-						return false;
-					}).collect(Collectors.toList());
-			modElements.sort(ModElement.getComparator(mcreator.getWorkspace(), modElements));
+				for (ModElementType<?> type : metfilters)
+					if (item.getType() == type)
+						return true;
+				return false;
+			};
 
-			filterItems.addAll(modElements);
+			filterItems.addAll(items.stream()
+					.filter(e -> e instanceof ModElement me && conditionSubFolders.test(me) && conditionByKeyWord.test(
+							me) && conditionByFilters.test(me) && conditionMetFilters.test(me)).map(e -> (ModElement) e)
+					.sorted(ModElement.getComparator(mcreator.getWorkspace(), items)).toList());
 
 			fireContentsChanged(this, 0, getSize());
 		}
 	}
 
-	private class WorkspacePanelMods extends AbstractWorkspacePanel {
+	public class WorkspacePanelMods extends AbstractWorkspacePanel {
 
 		private WorkspacePanelMods(JComponent contents) {
 			super(WorkspacePanel.this);
@@ -1458,6 +1496,10 @@ import java.util.stream.Collectors;
 		@Override public void refilterElements() {
 			dml.refilter();
 		}
+	}
+
+	public JPopupMenu getContextMenu() {
+		return contextMenu;
 	}
 
 }
