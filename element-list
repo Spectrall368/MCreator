@@ -30,10 +30,12 @@ net.mcreator.element.converter.v2024_3
 net.mcreator.element.converter.v2024_4
 net.mcreator.element.converter.v2025_1
 net.mcreator.element.converter.v2025_2
+net.mcreator.element.converter.v2025_4
 net.mcreator.element.parts
 net.mcreator.element.parts.gui
 net.mcreator.element.parts.procedure
 net.mcreator.element.types
+net.mcreator.element.types.bedrock
 net.mcreator.element.types.interfaces
 net.mcreator.generator
 net.mcreator.generator.blockly
@@ -76,7 +78,6 @@ net.mcreator.ui.browser
 net.mcreator.ui.browser.action
 net.mcreator.ui.component
 net.mcreator.ui.component.entries
-net.mcreator.ui.component.filebrowser
 net.mcreator.ui.component.tree
 net.mcreator.ui.component.util
 net.mcreator.ui.component.zoompane
@@ -121,6 +122,7 @@ net.mcreator.ui.minecraft.states.entity
 net.mcreator.ui.minecraft.states.item
 net.mcreator.ui.minecraft.villagers
 net.mcreator.ui.modgui
+net.mcreator.ui.modgui.bedrock
 net.mcreator.ui.modgui.codeviewer
 net.mcreator.ui.notifications
 net.mcreator.ui.procedure
