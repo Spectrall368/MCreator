@@ -355,8 +355,10 @@ public class TestWorkspaceDataProvider {
 		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("model_java")
 				!= GeneratorStats.CoverageStatus.NONE) {
 			try {
-				ModelImportActions.importJavaModel(null, workspace,
-						IOUtils.resourceToString("/entitymodel-mojmap-1.17.x.java", StandardCharsets.UTF_8));
+				if (workspace.getGenerator().getGeneratorConfiguration().getCompatibleJavaModelKeys()
+						.contains("mojmap-1.17.x"))
+					ModelImportActions.importJavaModel(null, workspace,
+							IOUtils.resourceToString("/entitymodel-mojmap-1.17.x.java", StandardCharsets.UTF_8));
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
