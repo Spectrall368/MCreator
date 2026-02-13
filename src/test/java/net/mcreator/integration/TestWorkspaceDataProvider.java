@@ -59,7 +59,6 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.LogManager;
 
 import javax.annotation.Nullable;
 import java.awt.*;
@@ -359,7 +358,7 @@ public class TestWorkspaceDataProvider {
 				ModelImportActions.importJavaModel(null, workspace,
 						IOUtils.resourceToString("/entitymodel-mojmap-1.17.x.java", StandardCharsets.UTF_8));
 			} catch (IOException e) {
-				LogManager.getLogger("Model import actions").error(e.getMessage());
+				throw new RuntimeException(e);
 			}
 		}
 
@@ -369,7 +368,7 @@ public class TestWorkspaceDataProvider {
 				AnimationImportActions.importJavaModelAnimation(null, workspace,
 						IOUtils.resourceToString("/entityanimation-mojmap.java", StandardCharsets.UTF_8));
 			} catch (IOException e) {
-				LogManager.getLogger("Model import actions").error(e.getMessage());
+				throw new RuntimeException(e);
 			}
 		}
 	}
