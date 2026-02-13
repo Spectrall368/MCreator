@@ -356,8 +356,6 @@ public class TestWorkspaceDataProvider {
 				!= GeneratorStats.CoverageStatus.NONE) {
 			try {
 				ModelImportActions.importJavaModel(null, workspace,
-						IOUtils.resourceToString("/entitymodel-mcp-1.14.x.java", StandardCharsets.UTF_8));
-				ModelImportActions.importJavaModel(null, workspace,
 						IOUtils.resourceToString("/entitymodel-mojmap-1.17.x.java", StandardCharsets.UTF_8));
 			} catch (IOException e) {
 				throw new RuntimeException(e);
