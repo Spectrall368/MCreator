@@ -92,12 +92,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="interfaces/IBlock.html" title="interface in net.mcreator.element.types.interfaces">IBlock</a></code>, <code><a href="interfaces/IBlockWithBoundingBox.html" title="interface in net.mcreator.element.types.interfaces">IBlockWithBoundingBox</a></code>, <code><a href="interfaces/ICommonType.html" title="interface in net.mcreator.element.types.interfaces">ICommonType</a></code>, <code><a href="interfaces/IItem.html" title="interface in net.mcreator.element.types.interfaces">IItem</a></code>, <code><a href="interfaces/IItemWithModel.html" title="interface in net.mcreator.element.types.interfaces">IItemWithModel</a></code>, <code><a href="interfaces/IMCItemProvider.html" title="interface in net.mcreator.element.types.interfaces">IMCItemProvider</a></code>, <code><a href="interfaces/IMultipleNames.html" title="interface in net.mcreator.element.types.interfaces">IMultipleNames</a></code>, <code><a href="interfaces/ISpecialInfoHolder.html" title="interface in net.mcreator.element.types.interfaces">ISpecialInfoHolder</a></code>, <code><a href="interfaces/ITabContainedElement.html" title="interface in net.mcreator.element.types.interfaces">ITabContainedElement</a></code></dd>
+<dd><code><a href="interfaces/IBlock.html" title="interface in net.mcreator.element.types.interfaces">IBlock</a></code>, <code><a href="interfaces/IBlockWithBoundingBox.html" title="interface in net.mcreator.element.types.interfaces">IBlockWithBoundingBox</a></code>, <code><a href="interfaces/IBlockWithLootTable.html" title="interface in net.mcreator.element.types.interfaces">IBlockWithLootTable</a></code>, <code><a href="interfaces/ICommonType.html" title="interface in net.mcreator.element.types.interfaces">ICommonType</a></code>, <code><a href="interfaces/IItem.html" title="interface in net.mcreator.element.types.interfaces">IItem</a></code>, <code><a href="interfaces/IItemWithModel.html" title="interface in net.mcreator.element.types.interfaces">IItemWithModel</a></code>, <code><a href="interfaces/IMCItemProvider.html" title="interface in net.mcreator.element.types.interfaces">IMCItemProvider</a></code>, <code><a href="interfaces/IMultipleNames.html" title="interface in net.mcreator.element.types.interfaces">IMultipleNames</a></code>, <code><a href="interfaces/ISpecialInfoHolder.html" title="interface in net.mcreator.element.types.interfaces">ISpecialInfoHolder</a></code>, <code><a href="interfaces/ITabContainedElement.html" title="interface in net.mcreator.element.types.interfaces">ITabContainedElement</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">Block</span>
 <span class="extends-implements">extends <a href="../GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>
-implements <a href="interfaces/IBlock.html" title="interface in net.mcreator.element.types.interfaces">IBlock</a>, <a href="interfaces/IItemWithModel.html" title="interface in net.mcreator.element.types.interfaces">IItemWithModel</a>, <a href="interfaces/ITabContainedElement.html" title="interface in net.mcreator.element.types.interfaces">ITabContainedElement</a>, <a href="interfaces/ISpecialInfoHolder.html" title="interface in net.mcreator.element.types.interfaces">ISpecialInfoHolder</a>, <a href="interfaces/IBlockWithBoundingBox.html" title="interface in net.mcreator.element.types.interfaces">IBlockWithBoundingBox</a>, <a href="interfaces/IMultipleNames.html" title="interface in net.mcreator.element.types.interfaces">IMultipleNames</a></span></div>
+implements <a href="interfaces/IBlock.html" title="interface in net.mcreator.element.types.interfaces">IBlock</a>, <a href="interfaces/IItemWithModel.html" title="interface in net.mcreator.element.types.interfaces">IItemWithModel</a>, <a href="interfaces/ITabContainedElement.html" title="interface in net.mcreator.element.types.interfaces">ITabContainedElement</a>, <a href="interfaces/ISpecialInfoHolder.html" title="interface in net.mcreator.element.types.interfaces">ISpecialInfoHolder</a>, <a href="interfaces/IBlockWithBoundingBox.html" title="interface in net.mcreator.element.types.interfaces">IBlockWithBoundingBox</a>, <a href="interfaces/IMultipleNames.html" title="interface in net.mcreator.element.types.interfaces">IMultipleNames</a>, <a href="interfaces/IBlockWithLootTable.html" title="interface in net.mcreator.element.types.interfaces">IBlockWithLootTable</a></span></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -267,202 +267,214 @@ implements <a href="interfaces/IBlock.html" title="interface in net.mcreator.ele
 <div class="col-second odd-row-color"><code><a href="#hasBlockItem" class="member-name-link">hasBlockItem</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#hasEnergyStorage" class="member-name-link">hasEnergyStorage</a></code></div>
+<div class="col-second even-row-color"><code><a href="#hasCustomOpacity" class="member-name-link">hasCustomOpacity</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#hasGravity" class="member-name-link">hasGravity</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#hasEnergyStorage" class="member-name-link">hasEnergyStorage</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#hasInventory" class="member-name-link">hasInventory</a></code></div>
+<div class="col-second even-row-color"><code><a href="#hasGravity" class="member-name-link">hasGravity</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#hasTransparency" class="member-name-link">hasTransparency</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/Sound.html" title="class in net.mcreator.element.parts">Sound</a></code></div>
-<div class="col-second even-row-color"><code><a href="#hitSound" class="member-name-link">hitSound</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#ignitedByLava" class="member-name-link">ignitedByLava</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#hasInventory" class="member-name-link">hasInventory</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#immuneToFire" class="member-name-link">immuneToFire</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#inventoryAutomationPlaceCondition" class="member-name-link">inventoryAutomationPlaceCondition</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second even-row-color"><code><a href="#inventoryAutomationTakeCondition" class="member-name-link">inventoryAutomationTakeCondition</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#inventoryComparatorPower" class="member-name-link">inventoryComparatorPower</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#inventoryDropWhenDestroyed" class="member-name-link">inventoryDropWhenDestroyed</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#inventoryInSlotIDs" class="member-name-link">inventoryInSlotIDs</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#inventoryOutSlotIDs" class="member-name-link">inventoryOutSlotIDs</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>int</code></div>
-<div class="col-second odd-row-color"><code><a href="#inventorySize" class="member-name-link">inventorySize</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>int</code></div>
-<div class="col-second even-row-color"><code><a href="#inventoryStackSize" class="member-name-link">inventoryStackSize</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#isBonemealable" class="member-name-link">isBonemealable</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second even-row-color"><code><a href="#isBonemealTargetCondition" class="member-name-link">isBonemealTargetCondition</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#isCustomSoundType" class="member-name-link">isCustomSoundType</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#isFluidTank" class="member-name-link">isFluidTank</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#isItemTinted" class="member-name-link">isItemTinted</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#isLadder" class="member-name-link">isLadder</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#isNotColidable" class="member-name-link">isNotColidable</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#isReplaceable" class="member-name-link">isReplaceable</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#isWaterloggable" class="member-name-link">isWaterloggable</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a></code></div>
-<div class="col-second even-row-color"><code><a href="#itemTexture" class="member-name-link">itemTexture</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>double</code></div>
-<div class="col-second odd-row-color"><code><a href="#jumpFactor" class="member-name-link">jumpFactor</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>int</code></div>
-<div class="col-second even-row-color"><code><a href="#lightOpacity" class="member-name-link">lightOpacity</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>int</code></div>
-<div class="col-second odd-row-color"><code><a href="#luminance" class="member-name-link">luminance</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>int</code></div>
-<div class="col-second even-row-color"><code><a href="#maxGenerateHeight" class="member-name-link">maxGenerateHeight</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>int</code></div>
-<div class="col-second odd-row-color"><code><a href="#maxStackSize" class="member-name-link">maxStackSize</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>int</code></div>
-<div class="col-second even-row-color"><code><a href="#minGenerateHeight" class="member-name-link">minGenerateHeight</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#name" class="member-name-link">name</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#noteBlockInstrument" class="member-name-link">noteBlockInstrument</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#offsetType" class="member-name-link">offsetType</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second even-row-color"><code><a href="#onBlockAdded" class="member-name-link">onBlockAdded</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#onBlockPlayedBy" class="member-name-link">onBlockPlayedBy</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second even-row-color"><code><a href="#onBonemealSuccess" class="member-name-link">onBonemealSuccess</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#onDestroyedByExplosion" class="member-name-link">onDestroyedByExplosion</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second even-row-color"><code><a href="#onDestroyedByPlayer" class="member-name-link">onDestroyedByPlayer</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#onEntityCollides" class="member-name-link">onEntityCollides</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second even-row-color"><code><a href="#onEntityFallsOn" class="member-name-link">onEntityFallsOn</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#onEntityWalksOn" class="member-name-link">onEntityWalksOn</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second even-row-color"><code><a href="#onHitByProjectile" class="member-name-link">onHitByProjectile</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#onNeighbourBlockChanges" class="member-name-link">onNeighbourBlockChanges</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second even-row-color"><code><a href="#onRandomUpdateEvent" class="member-name-link">onRandomUpdateEvent</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#onReceivedVibration" class="member-name-link">onReceivedVibration</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second even-row-color"><code><a href="#onRedstoneOff" class="member-name-link">onRedstoneOff</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#onRedstoneOn" class="member-name-link">onRedstoneOn</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second even-row-color"><code><a href="#onRightClicked" class="member-name-link">onRightClicked</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#onStartToDestroy" class="member-name-link">onStartToDestroy</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second even-row-color"><code><a href="#onTickUpdate" class="member-name-link">onTickUpdate</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#openGUIOnRightClick" class="member-name-link">openGUIOnRightClick</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a></code></div>
-<div class="col-second even-row-color"><code><a href="#particleTexture" class="member-name-link">particleTexture</a></code></div>
+<div class="col-second even-row-color"><code><a href="#hasTransparency" class="member-name-link">hasTransparency</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="../parts/Sound.html" title="class in net.mcreator.element.parts">Sound</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#placeSound" class="member-name-link">placeSound</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#hitSound" class="member-name-link">hitSound</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second even-row-color"><code><a href="#placingCondition" class="member-name-link">placingCondition</a></code></div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#ignitedByLava" class="member-name-link">ignitedByLava</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#plantsGrowOn" class="member-name-link">plantsGrowOn</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#immuneToFire" class="member-name-link">immuneToFire</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a></code></div>
-<div class="col-second even-row-color"><code><a href="#pottedPlant" class="member-name-link">pottedPlant</a></code></div>
+<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second even-row-color"><code><a href="#inventoryAutomationPlaceCondition" class="member-name-link">inventoryAutomationPlaceCondition</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#rarity" class="member-name-link">rarity</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#reactionToPushing" class="member-name-link">reactionToPushing</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>int</code></div>
-<div class="col-second odd-row-color"><code><a href="#renderType" class="member-name-link">renderType</a></code></div>
+<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#inventoryAutomationTakeCondition" class="member-name-link">inventoryAutomationTakeCondition</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#requiresCorrectTool" class="member-name-link">requiresCorrectTool</a></code></div>
+<div class="col-second even-row-color"><code><a href="#inventoryComparatorPower" class="member-name-link">inventoryComparatorPower</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>double</code></div>
-<div class="col-second odd-row-color"><code><a href="#resistance" class="member-name-link">resistance</a></code></div>
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#inventoryDropWhenDestroyed" class="member-name-link">inventoryDropWhenDestroyed</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../parts/BiomeEntry.html" title="class in net.mcreator.element.parts">BiomeEntry</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#restrictionBiomes" class="member-name-link">restrictionBiomes</a></code></div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#inventoryInSlotIDs" class="member-name-link">inventoryInSlotIDs</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#inventoryOutSlotIDs" class="member-name-link">inventoryOutSlotIDs</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>int</code></div>
+<div class="col-second even-row-color"><code><a href="#inventorySize" class="member-name-link">inventorySize</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>int</code></div>
-<div class="col-second odd-row-color"><code><a href="#rotationMode" class="member-name-link">rotationMode</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#inventoryStackSize" class="member-name-link">inventoryStackSize</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>boolean</code></div>
-<div class="col-second even-row-color"><code><a href="#sensitiveToVibration" class="member-name-link">sensitiveToVibration</a></code></div>
+<div class="col-second even-row-color"><code><a href="#isBonemealable" class="member-name-link">isBonemealable</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#isBonemealTargetCondition" class="member-name-link">isBonemealTargetCondition</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#isCustomSoundType" class="member-name-link">isCustomSoundType</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#isFluidTank" class="member-name-link">isFluidTank</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#isItemTinted" class="member-name-link">isItemTinted</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#isLadder" class="member-name-link">isLadder</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#isNotColidable" class="member-name-link">isNotColidable</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#isReplaceable" class="member-name-link">isReplaceable</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#isWaterloggable" class="member-name-link">isWaterloggable</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="../parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#signEntityTexture" class="member-name-link">signEntityTexture</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#itemTexture" class="member-name-link">itemTexture</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>double</code></div>
+<div class="col-second even-row-color"><code><a href="#jumpFactor" class="member-name-link">jumpFactor</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>double</code></div>
+<div class="col-second odd-row-color"><code><a href="#leavesParticleChance" class="member-name-link">leavesParticleChance</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../parts/Particle.html" title="class in net.mcreator.element.parts">Particle</a></code></div>
+<div class="col-second even-row-color"><code><a href="#leavesParticleType" class="member-name-link">leavesParticleType</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>int</code></div>
+<div class="col-second odd-row-color"><code><a href="#lightOpacity" class="member-name-link">lightOpacity</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../parts/procedure/NumberProcedure.html" title="class in net.mcreator.element.parts.procedure">NumberProcedure</a></code></div>
+<div class="col-second even-row-color"><code><a href="#luminance" class="member-name-link">luminance</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>int</code></div>
+<div class="col-second odd-row-color"><code><a href="#maxGenerateHeight" class="member-name-link">maxGenerateHeight</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>int</code></div>
+<div class="col-second even-row-color"><code><a href="#maxStackSize" class="member-name-link">maxStackSize</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>int</code></div>
+<div class="col-second odd-row-color"><code><a href="#minGenerateHeight" class="member-name-link">minGenerateHeight</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#name" class="member-name-link">name</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#noteBlockInstrument" class="member-name-link">noteBlockInstrument</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#offsetType" class="member-name-link">offsetType</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#onBlockAdded" class="member-name-link">onBlockAdded</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second even-row-color"><code><a href="#onBlockPlayedBy" class="member-name-link">onBlockPlayedBy</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#onBonemealSuccess" class="member-name-link">onBonemealSuccess</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second even-row-color"><code><a href="#onDestroyedByExplosion" class="member-name-link">onDestroyedByExplosion</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#onDestroyedByPlayer" class="member-name-link">onDestroyedByPlayer</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second even-row-color"><code><a href="#onEntityCollides" class="member-name-link">onEntityCollides</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#onEntityFallsOn" class="member-name-link">onEntityFallsOn</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second even-row-color"><code><a href="#onEntityWalksOn" class="member-name-link">onEntityWalksOn</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#onHitByProjectile" class="member-name-link">onHitByProjectile</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second even-row-color"><code><a href="#onNeighbourBlockChanges" class="member-name-link">onNeighbourBlockChanges</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#onRandomUpdateEvent" class="member-name-link">onRandomUpdateEvent</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second even-row-color"><code><a href="#onReceivedVibration" class="member-name-link">onReceivedVibration</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#onRedstoneOff" class="member-name-link">onRedstoneOff</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second even-row-color"><code><a href="#onRedstoneOn" class="member-name-link">onRedstoneOn</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#onRightClicked" class="member-name-link">onRightClicked</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second even-row-color"><code><a href="#onStartToDestroy" class="member-name-link">onStartToDestroy</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#onTickUpdate" class="member-name-link">onTickUpdate</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#openGUIOnRightClick" class="member-name-link">openGUIOnRightClick</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#particleTexture" class="member-name-link">particleTexture</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../parts/Sound.html" title="class in net.mcreator.element.parts">Sound</a></code></div>
+<div class="col-second even-row-color"><code><a href="#placeSound" class="member-name-link">placeSound</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#placingCondition" class="member-name-link">placingCondition</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>boolean</code></div>
+<div class="col-second even-row-color"><code><a href="#plantsGrowOn" class="member-name-link">plantsGrowOn</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#pottedPlant" class="member-name-link">pottedPlant</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#rarity" class="member-name-link">rarity</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#reactionToPushing" class="member-name-link">reactionToPushing</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>int</code></div>
+<div class="col-second even-row-color"><code><a href="#renderType" class="member-name-link">renderType</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#requiresCorrectTool" class="member-name-link">requiresCorrectTool</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>double</code></div>
+<div class="col-second even-row-color"><code><a href="#resistance" class="member-name-link">resistance</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../parts/BiomeEntry.html" title="class in net.mcreator.element.parts">BiomeEntry</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#restrictionBiomes" class="member-name-link">restrictionBiomes</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>int</code></div>
+<div class="col-second even-row-color"><code><a href="#rotationMode" class="member-name-link">rotationMode</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>boolean</code></div>
+<div class="col-second odd-row-color"><code><a href="#sensitiveToVibration" class="member-name-link">sensitiveToVibration</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="../parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a></code></div>
+<div class="col-second even-row-color"><code><a href="#signEntityTexture" class="member-name-link">signEntityTexture</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="../parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#signGUITexture" class="member-name-link">signGUITexture</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>double</code></div>
 <div class="col-second even-row-color"><code><a href="#slipperiness" class="member-name-link">slipperiness</a></code></div>
@@ -566,6 +578,12 @@ implements <a href="interfaces/IBlock.html" title="interface in net.mcreator.ele
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#dropsWithShears()" class="member-name-link">dropsWithShears</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#dropsWithSilkTouch()" class="member-name-link">dropsWithSilkTouch</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#finalizeModElementGeneration()" class="member-name-link">finalizeModElementGeneration</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -592,20 +610,26 @@ implements <a href="interfaces/IBlock.html" title="interface in net.mcreator.ele
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../parts/TabEntry.html" title="class in net.mcreator.element.parts">TabEntry</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCreativeTabs()" class="member-name-link">getCreativeTabs</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="Block.StateEntry.html" title="class in net.mcreator.element.types">Block.StateEntry</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDefinedStates()" class="member-name-link">getDefinedStates</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDefaultDrop()" class="member-name-link">getDefaultDrop</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="Block.StateEntry.html" title="class in net.mcreator.element.types">Block.StateEntry</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDefinedStatesWithCustomShape()" class="member-name-link">getDefinedStatesWithCustomShape</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDefinedStates()" class="member-name-link">getDefinedStates</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/ImageIcon.html" title="class or interface in javax.swing" class="external-link">ImageIcon</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIconForMCItem(net.mcreator.workspace.Workspace,java.lang.String)" class="member-name-link">getIconForMCItem</a><wbr>(<a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="Block.StateEntry.html" title="class in net.mcreator.element.types">Block.StateEntry</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDefinedStatesWithCustomShape()" class="member-name-link">getDefinedStatesWithCustomShape</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/javax/swing/ImageIcon.html" title="class or interface in javax.swing" class="external-link">ImageIcon</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIconForMCItem(net.mcreator.workspace.Workspace,java.lang.String)" class="member-name-link">getIconForMCItem</a><wbr>(<a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;suffix)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This method determines what icon should be used for a custom MCItem, according to its eventual suffix</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../workspace/resources/Model.html" title="class in net.mcreator.workspace.resources">Model</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getItemModel()" class="member-name-link">getItemModel</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../workspace/resources/Model.html" title="class in net.mcreator.workspace.resources">Model</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getItemModel()" class="member-name-link">getItemModel</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLeavesParticleColor()" class="member-name-link">getLeavesParticleColor</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getParticleTexture()" class="member-name-link">getParticleTexture</a>()</code></div>
@@ -647,55 +671,52 @@ implements <a href="interfaces/IBlock.html" title="interface in net.mcreator.ele
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasCustomItemProperties()" class="member-name-link">hasCustomItemProperties</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hasDrops()" class="member-name-link">hasDrops</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isBlockTinted()" class="member-name-link">isBlockTinted</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isBlockTinted()" class="member-name-link">isBlockTinted</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isDoubleBlock()" class="member-name-link">isDoubleBlock</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isDoubleBlock()" class="member-name-link">isDoubleBlock</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isFullCube()" class="member-name-link">isFullCube</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isFullCube()" class="member-name-link">isFullCube</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isSign()" class="member-name-link">isSign</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isSign()" class="member-name-link">isSign</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#providedMCItems()" class="member-name-link">providedMCItems</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#providedMCItems()" class="member-name-link">providedMCItems</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This method determines what MCItems are provided by this generatable element</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#renderType()" class="member-name-link">renderType</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shouldDisableOffset()" class="member-name-link">shouldDisableOffset</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#renderType()" class="member-name-link">renderType</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shouldOpenGUIOnRightClick()" class="member-name-link">shouldOpenGUIOnRightClick</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shouldDisableOffset()" class="member-name-link">shouldDisableOffset</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shouldScheduleTick()" class="member-name-link">shouldScheduleTick</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shouldOpenGUIOnRightClick()" class="member-name-link">shouldOpenGUIOnRightClick</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#supportsBlockStates()" class="member-name-link">supportsBlockStates</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#shouldScheduleTick()" class="member-name-link">shouldScheduleTick</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#textureBack()" class="member-name-link">textureBack</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#supportsBlockStates()" class="member-name-link">supportsBlockStates</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#textureFront()" class="member-name-link">textureFront</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#textureBack()" class="member-name-link">textureBack</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#textureLeft()" class="member-name-link">textureLeft</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#textureFront()" class="member-name-link">textureFront</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#textureRight()" class="member-name-link">textureRight</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#textureLeft()" class="member-name-link">textureLeft</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#textureTop()" class="member-name-link">textureTop</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#textureRight()" class="member-name-link">textureRight</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#textureTop()" class="member-name-link">textureTop</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -708,6 +729,9 @@ implements <a href="interfaces/IBlock.html" title="interface in net.mcreator.ele
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.element.types.interfaces.IBlockWithBoundingBox">Methods inherited from interface&nbsp;net.mcreator.element.types.interfaces.<a href="interfaces/IBlockWithBoundingBox.html" title="interface in net.mcreator.element.types.interfaces">IBlockWithBoundingBox</a></h3>
 <code><a href="interfaces/IBlockWithBoundingBox.html#isBoundingBoxEmpty()">isBoundingBoxEmpty</a>, <a href="interfaces/IBlockWithBoundingBox.html#negativeBoundingBoxes()">negativeBoundingBoxes</a>, <a href="interfaces/IBlockWithBoundingBox.html#positiveBoundingBoxes()">positiveBoundingBoxes</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-net.mcreator.element.types.interfaces.IBlockWithLootTable">Methods inherited from interface&nbsp;net.mcreator.element.types.interfaces.<a href="interfaces/IBlockWithLootTable.html" title="interface in net.mcreator.element.types.interfaces">IBlockWithLootTable</a></h3>
+<code><a href="interfaces/IBlockWithLootTable.html#hasDefaultDrop()">hasDefaultDrop</a>, <a href="interfaces/IBlockWithLootTable.html#hasDefaultDropPool()">hasDefaultDropPool</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.element.types.interfaces.IMCItemProvider">Methods inherited from interface&nbsp;net.mcreator.element.types.interfaces.<a href="interfaces/IMCItemProvider.html" title="interface in net.mcreator.element.types.interfaces">IMCItemProvider</a></h3>
 <code><a href="interfaces/IMCItemProvider.html#getProvidedBlocks()">getProvidedBlocks</a></code></div>
@@ -841,9 +865,27 @@ implements <a href="interfaces/IBlock.html" title="interface in net.mcreator.ele
 </section>
 </li>
 <li>
+<section class="detail" id="leavesParticleType">
+<h3>leavesParticleType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/Particle.html" title="class in net.mcreator.element.parts">Particle</a></span>&nbsp;<span class="element-name">leavesParticleType</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="leavesParticleChance">
+<h3>leavesParticleChance</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">double</span>&nbsp;<span class="element-name">leavesParticleChance</span></div>
+</section>
+</li>
+<li>
 <section class="detail" id="signEntityTexture">
 <h3>signEntityTexture</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a></span>&nbsp;<span class="element-name">signEntityTexture</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="signGUITexture">
+<h3>signGUITexture</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/TextureHolder.html" title="class in net.mcreator.element.parts">TextureHolder</a></span>&nbsp;<span class="element-name">signGUITexture</span></div>
 </section>
 </li>
 <li>
@@ -1019,6 +1061,12 @@ implements <a href="interfaces/IBlock.html" title="interface in net.mcreator.ele
 <section class="detail" id="canRedstoneConnect">
 <h3>canRedstoneConnect</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">canRedstoneConnect</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="hasCustomOpacity">
+<h3>hasCustomOpacity</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">hasCustomOpacity</span></div>
 </section>
 </li>
 <li>
@@ -1198,7 +1246,7 @@ implements <a href="interfaces/IBlock.html" title="interface in net.mcreator.ele
 <li>
 <section class="detail" id="luminance">
 <h3>luminance</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">luminance</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/procedure/NumberProcedure.html" title="class in net.mcreator.element.parts.procedure">NumberProcedure</a></span>&nbsp;<span class="element-name">luminance</span></div>
 </section>
 </li>
 <li>
@@ -1626,9 +1674,40 @@ implements <a href="interfaces/IBlock.html" title="interface in net.mcreator.ele
 </section>
 </li>
 <li>
-<section class="detail" id="hasDrops()">
-<h3>hasDrops</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">hasDrops</span>()</div>
+<section class="detail" id="getDefaultDrop()">
+<h3>getDefaultDrop</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a></span>&nbsp;<span class="element-name">getDefaultDrop</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="interfaces/IBlockWithLootTable.html#getDefaultDrop()">getDefaultDrop</a></code>&nbsp;in interface&nbsp;<code><a href="interfaces/IBlockWithLootTable.html" title="interface in net.mcreator.element.types.interfaces">IBlockWithLootTable</a></code></dd>
+<dt>Returns:</dt>
+<dd>The item that is dropped by this block under standard conditions (e.g. no silk touch or shears), or air
+ if the block drops nothing.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="dropsWithSilkTouch()">
+<h3>dropsWithSilkTouch</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">dropsWithSilkTouch</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="interfaces/IBlockWithLootTable.html#dropsWithSilkTouch()">dropsWithSilkTouch</a></code>&nbsp;in interface&nbsp;<code><a href="interfaces/IBlockWithLootTable.html" title="interface in net.mcreator.element.types.interfaces">IBlockWithLootTable</a></code></dd>
+<dt>Returns:</dt>
+<dd>true if the block drops itself when harvested with silk touch.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="dropsWithShears()">
+<h3>dropsWithShears</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">dropsWithShears</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="interfaces/IBlockWithLootTable.html#dropsWithShears()">dropsWithShears</a></code>&nbsp;in interface&nbsp;<code><a href="interfaces/IBlockWithLootTable.html" title="interface in net.mcreator.element.types.interfaces">IBlockWithLootTable</a></code></dd>
+<dt>Returns:</dt>
+<dd>true if the block drops itself when harvested with shears.</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -1802,6 +1881,12 @@ implements <a href="interfaces/IBlock.html" title="interface in net.mcreator.ele
 <section class="detail" id="getVibrationalEvents()">
 <h3>getVibrationalEvents</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getVibrationalEvents</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getLeavesParticleColor()">
+<h3>getLeavesParticleColor</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getLeavesParticleColor</span>()</div>
 </section>
 </li>
 <li>
