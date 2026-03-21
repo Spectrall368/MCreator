@@ -359,6 +359,10 @@ public class TestWorkspaceDataProvider {
 						.contains("mojmap-1.17.x"))
 					ModelImportActions.importJavaModel(null, workspace,
 							IOUtils.resourceToString("/entitymodel-mojmap-1.17.x.java", StandardCharsets.UTF_8));
+				else
+					ModelImportActions.importJavaModel(null, workspace, IOUtils.resourceToString(
+							"/entitymodel-mojmap-" + workspace.getGenerator().getGeneratorConfiguration()
+									.getCompatibleJavaModelKeys().getFirst() + ".java", StandardCharsets.UTF_8));
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
