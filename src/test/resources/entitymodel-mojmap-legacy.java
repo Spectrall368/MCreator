@@ -1,5 +1,3 @@
-*/
-
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
@@ -22,7 +20,6 @@
 // Made with Blockbench 5.0.7
 // Exported for Minecraft version 1.14 with MCP mappings
 // Paste this class into your mod and generate all required imports
-
 
 public class CustomJavaModel extends EntityModel {
 	private final RendererModel Head;
