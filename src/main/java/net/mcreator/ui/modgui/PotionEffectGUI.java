@@ -66,7 +66,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
-	private JAttributeModifierList modifierList;
+	private final JAttributeModifierList modifierList = new JAttributeModifierList(mcreator, this, true);
 
 	private ProcedureSelector onStarted;
 	private ProcedureSelector onActiveTick;
@@ -82,8 +82,6 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	}
 
 	@Override protected void initGUI() {
-		modifierList = new JAttributeModifierList(mcreator, this);
-
 		onStarted = new ProcedureSelector(this.withEntry("potioneffect/when_potion_applied"), mcreator,
 				L10N.t("elementgui.potioneffect.event_potion_applied"), ProcedureSelector.Side.SERVER,
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
@@ -174,7 +172,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 		JComponent modifiersEditor = PanelUtils.northAndCenterElement(
 				HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/modifiers"),
-						L10N.label("elementgui.potioneffect.modifiers")), modifierList);
+						L10N.label("elementgui.common.attribute_modifier.modifiers")), modifierList);
 		modifiersEditor.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		modifiersPage.add("Center", modifiersEditor);
@@ -201,7 +199,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		}
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3).validate(page1group);
-		addPage(L10N.t("elementgui.potioneffect.page_attribute_modifiers"), modifiersPage).lazyValidate(
+		addPage(L10N.t("elementgui.common.page_attribute_modifiers"), modifiersPage).lazyValidate(
 				modifierList::getValidationResult);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 	}

@@ -19,7 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.AttributeEntry;
+import net.mcreator.element.parts.AttributeModifierEntry;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TextureHolder;
@@ -73,12 +73,6 @@ import java.util.List;
 
 		this.mobEffectCategory = "NEUTRAL";
 		modifiers = new ArrayList<>();
-	}
-
-	public static class AttributeModifierEntry {
-		public AttributeEntry attribute;
-		public double amount;
-		public String operation;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

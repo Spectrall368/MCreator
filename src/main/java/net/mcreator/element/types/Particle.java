@@ -18,6 +18,7 @@
 
 package net.mcreator.element.types;
 
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TextureHolder;
 import net.mcreator.element.parts.procedure.NumberProcedure;
@@ -39,7 +40,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Particle extends GeneratableElement {
+@SuppressWarnings("unused") public class Particle extends GeneratableElement {
 
 	private static final Logger LOG = LogManager.getLogger(Particle.class);
 
@@ -51,6 +52,7 @@ public class Particle extends GeneratableElement {
 	public double width;
 	public double height;
 	public NumberProcedure scale;
+	public boolean fixedScale;
 	public double speedFactor;
 	public double gravity;
 	public int maxAge;
@@ -61,10 +63,15 @@ public class Particle extends GeneratableElement {
 	public boolean canCollide;
 	public boolean alwaysShow;
 	public boolean emissiveRendering;
+	public Procedure rotationProvider;
 
 	public String renderType;
 
 	public Procedure additionalExpiryCondition;
+
+	private Particle() {
+		this(null);
+	}
 
 	public Particle(ModElement element) {
 		super(element);
@@ -119,6 +126,12 @@ public class Particle extends GeneratableElement {
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateParticlePreviewPicture(texture.getImage(TextureType.PARTICLE),
 				getTextureTileCount() > 1, getModElement().getName());
+	}
+
+	public boolean hasAngularVelocityOrAcceleration() {
+		return angularVelocity != 0 || angularAcceleration != 0 || (rotationProvider != null
+				&& rotationProvider.getDependencies(this.getModElement().getWorkspace()).stream().map(Dependency::name)
+				.anyMatch(name -> "angularVelocity".equals(name) || "angularAcceleration".equals(name)));
 	}
 
 }

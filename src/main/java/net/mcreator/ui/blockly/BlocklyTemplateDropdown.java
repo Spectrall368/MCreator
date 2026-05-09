@@ -20,8 +20,8 @@
 package net.mcreator.ui.blockly;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import net.mcreator.blockly.BlocklyTemplateIO;
 import net.mcreator.blockly.java.BlocklyVariables;
-import net.mcreator.blockly.java.ProcedureTemplateIO;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -60,26 +60,28 @@ public class BlocklyTemplateDropdown extends JScrollablePopupMenu {
 				String procedureXml;
 
 				if (template.identifier instanceof String)
-					procedureXml = ProcedureTemplateIO.importBlocklyXML("/" + template.identifier);
+					procedureXml = BlocklyTemplateIO.importBlocklyXML("/" + template.identifier);
 				else
-					procedureXml = ProcedureTemplateIO.importBlocklyXML((File) template.identifier);
+					procedureXml = BlocklyTemplateIO.importBlocklyXML((File) template.identifier);
 
 				modTypeButton.addActionListener(actionEvent -> {
-					if (procedureGUI != null) {
-						Set<VariableElement> localVariables = BlocklyVariables.tryToExtractVariables(procedureXml);
-						List<VariableElement> existingLocalVariables = blocklyPanel.getLocalVariablesList();
+					new Thread(() -> {
+						if (procedureGUI != null) {
+							Set<VariableElement> localVariables = BlocklyVariables.tryToExtractVariables(procedureXml);
+							List<VariableElement> existingLocalVariables = blocklyPanel.getLocalVariablesList();
 
-						for (VariableElement localVariable : localVariables) {
-							if (existingLocalVariables.contains(localVariable))
-								continue; // skip if variable with this name already exists
+							for (VariableElement localVariable : localVariables) {
+								if (existingLocalVariables.contains(localVariable))
+									continue; // skip if variable with this name already exists
 
-							blocklyPanel.addLocalVariable(localVariable.getName(),
-									localVariable.getType().getBlocklyVariableType());
-							procedureGUI.localVars.addElement(localVariable);
+								blocklyPanel.addLocalVariable(localVariable.getName(),
+										localVariable.getType().getBlocklyVariableType());
+								procedureGUI.localVars.addElement(localVariable);
+							}
 						}
-					}
 
-					blocklyPanel.addBlocksFromXML(procedureXml);
+						blocklyPanel.addBlocksFromXML(procedureXml);
+					}, "Blockly-Template-Placer").start();
 				});
 
 				modTypeButton.setOpaque(true);

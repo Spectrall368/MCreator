@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class Procedure extends GeneratableElement {
+@SuppressWarnings("unused") public class Procedure extends GeneratableElement {
 
 	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"event_trigger\" deletable=\"false\" x=\"40\" y=\"40\"><field name=\"trigger\">no_ext_trigger</field></block></xml>";
 
@@ -55,6 +55,10 @@ public class Procedure extends GeneratableElement {
 
 	// this flag is only used by tests to force dependencies for trigger tests
 	@VisibleForTesting private transient boolean skipDependencyRegeneration = false;
+
+	private Procedure() {
+		this(null);
+	}
 
 	public Procedure(ModElement element) {
 		super(element);
@@ -112,12 +116,14 @@ public class Procedure extends GeneratableElement {
 		return additionalData -> {
 			BlocklyToProcedure blocklyToJava = getBlocklyToProcedure(additionalData);
 
-			List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-					.getExternalTriggers();
+			List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader(
+					BlocklyEditorType.PROCEDURE).getExternalTriggers();
 			ExternalTrigger trigger = null;
 			for (ExternalTrigger externalTrigger : externalTriggers) {
-				if (externalTrigger.getID().equals(blocklyToJava.getExternalTrigger()))
+				if (externalTrigger.getID().equals(blocklyToJava.getExternalTrigger())) {
 					trigger = externalTrigger;
+					break;
+				}
 			}
 
 			if (!this.skipDependencyRegeneration) {

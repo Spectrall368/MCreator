@@ -25,12 +25,14 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.component.util.ComboBoxUtil;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.DataListComboBox;
+import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
@@ -101,10 +103,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 		});
 		add("Center", entries);
 
-		setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.villager_trade.profession_trades"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
+		ComponentUtils.makeSection(this, L10N.t("elementgui.villager_trade.profession_trades"));
 
 		parent.revalidate();
 		parent.repaint();
@@ -136,5 +135,11 @@ public class JVillagerTradeProfession extends JEntriesList {
 				registerEntryUI(entry);
 				entry.setEntry(e);
 			});
+	}
+
+	public AggregatedValidationResult getValidationResult() {
+		AggregatedValidationResult validationResult = new AggregatedValidationResult();
+		entryList.forEach(e -> validationResult.addValidationGroup(e.getValidationResult()));
+		return validationResult;
 	}
 }

@@ -106,6 +106,11 @@ import java.util.stream.Collectors;
 	public int bootsItemRenderType;
 	public String bootsItemCustomModelName;
 
+	public boolean helmetTranslucency;
+	public boolean bodyTranslucency;
+	public boolean leggingsTranslucency;
+	public boolean bootsTranslucency;
+
 	public boolean helmetImmuneToFire;
 	public boolean bodyImmuneToFire;
 	public boolean leggingsImmuneToFire;
@@ -131,6 +136,7 @@ import java.util.stream.Collectors;
 	public double knockbackResistance;
 	public Sound equipSound;
 	@ModElementReference public List<MItemBlock> repairItems;
+	public String rarity;
 
 	private Armor() {
 		this(null);
@@ -139,6 +145,7 @@ import java.util.stream.Collectors;
 	public Armor(ModElement element) {
 		super(element);
 
+		this.rarity = "COMMON";
 		this.creativeTabs = new ArrayList<>();
 		this.repairItems = new ArrayList<>();
 

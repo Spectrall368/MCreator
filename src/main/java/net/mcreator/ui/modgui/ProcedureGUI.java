@@ -39,6 +39,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.search.ISearchable;
 import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.ValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidator;
@@ -133,13 +134,14 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJava.getCompileNotes();
 
-		// Check that no local variable has the same name as one of the dependencies
 		dependenciesArrayList = blocklyToJava.getDependencies();
+
+		// Check that no local variable has the same name as one of the dependencies
 		for (var dependency : dependenciesArrayList) {
 			for (int i = 0; i < localVars.getSize(); i++) {
-				if (dependency.getName().equals(localVars.get(i).getName())) {
+				if (dependency.name().equals(localVars.get(i).getName())) {
 					compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							L10N.t("elementgui.procedure.variable_name_clashes_with_dep", dependency.getName())));
+							L10N.t("elementgui.procedure.variable_name_clashes_with_dep", dependency.name())));
 					break; // We found a match, there's no need to check the other variables
 				}
 			}
@@ -167,8 +169,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		// Handle compile notes related to external trigger if present
 		if (blocklyToJava.getExternalTrigger() != null) {
-			List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader()
-					.getExternalTriggers();
+			List<ExternalTrigger> externalTriggers = BlocklyLoader.INSTANCE.getExternalTriggerLoader(
+					BlocklyEditorType.PROCEDURE).getExternalTriggers();
 
 			for (ExternalTrigger externalTrigger : externalTriggers) {
 				if (externalTrigger.getID().equals(blocklyToJava.getExternalTrigger())) {
@@ -178,7 +180,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			}
 
 			if (trigger != null) {
-				if (!mcreator.getGeneratorStats().getProcedureTriggers().contains(trigger.getID())) {
+				if (!mcreator.getGeneratorStats().getBlocklyTriggers(BlocklyEditorType.PROCEDURE)
+						.contains(trigger.getID())) {
 					compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 							L10N.t("elementgui.procedure.global_trigger_unsupported")));
 				}
@@ -245,7 +248,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 						if (trigger.dependencies_provided == null || !trigger.dependencies_provided.contains(
 								dependency)) {
 							warn = true;
-							missingdeps.append(" ").append(dependency.getName());
+							missingdeps.append(" ").append(dependency.name());
 						}
 					}
 					if (warn) {
@@ -301,7 +304,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			setBackground(isSelected ? col : Theme.current().getBackgroundColor());
 			setForeground(isSelected ? Theme.current().getForegroundColor() : col.brighter());
 			ComponentUtils.deriveFont(this, 14);
-			setText(value.getName());
+			setText(value.name());
 			setToolTipText(value.toString());
 			return this;
 		}
@@ -422,19 +425,19 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		addvar.addActionListener(e -> {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(mcreator, false,
 					new OptionPaneValidator() {
-						@Override public Validator.ValidationResult validate(JComponent component) {
+						@Override public ValidationResult validate(JComponent component) {
 							Validator validator = new JavaMemberNameValidator((VTextField) component, false, false);
 							String variableName = ((VTextField) component).getText();
 							for (int i = 0; i < localVars.getSize(); i++) {
 								String nameinrow = localVars.get(i).getName();
 								if (variableName.equals(nameinrow))
-									return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+									return new ValidationResult(ValidationResult.Type.ERROR,
 											L10N.t("common.name_already_exists"));
 							}
 							for (Dependency dependency : dependenciesArrayList) {
-								String nameinrow = dependency.getName();
+								String nameinrow = dependency.name();
 								if (variableName.equals(nameinrow))
-									return new ValidationResult(ValidationResultType.ERROR,
+									return new ValidationResult(ValidationResult.Type.ERROR,
 											L10N.t("elementgui.procedure.name_already_exists_dep"));
 							}
 							return validator.validate();
@@ -480,7 +483,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				if (dependencies.getSize() > 0 && e.getClickCount() == 2) {
 					Dependency selectedDep = dependenciesList.getSelectedValue();
 					if (selectedDep != null) {
-						String blockXml = selectedDep.getDependencyBlockXml();
+						String blockXml = selectedDep.getDependencyBlockXml(BlocklyEditorType.PROCEDURE);
 						if (blockXml != null)
 							blocklyPanel.addBlocksFromXML(blockXml);
 					}
@@ -493,7 +496,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				if (dependenciesExtTrigger.getSize() > 0 && e.getClickCount() == 2) {
 					Dependency selectedDep = dependenciesExtTrigList.getSelectedValue();
 					if (selectedDep != null) {
-						String blockXml = selectedDep.getDependencyBlockXml();
+						String blockXml = selectedDep.getDependencyBlockXml(BlocklyEditorType.PROCEDURE);
 						if (blockXml != null)
 							blocklyPanel.addBlocksFromXML(blockXml);
 					}
@@ -586,18 +589,17 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.PROCEDURE);
 
-			BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTriggers()
-					.forEach(blocklyPanel::addExternalTriggerForProcedureEditor);
+			BlocklyLoader.INSTANCE.getExternalTriggerLoader(BlocklyEditorType.PROCEDURE).getExternalTriggers()
+					.forEach(blocklyPanel::addExternalTrigger);
 			for (VariableElement variable : mcreator.getWorkspace().getVariableElements()) {
 				blocklyPanel.addGlobalVariable(variable.getName(), variable.getType().getBlocklyVariableType());
 			}
-			blocklyPanel.addChangeListener(changeEvent -> new Thread(
-					() -> regenerateBlockAssemblies(changeEvent.getSource() instanceof BlocklyPanel),
-					"ProcedureRegenerate").start());
-			if (!isEditingMode()) {
-				blocklyPanel.setXML(net.mcreator.element.types.Procedure.XML_BASE);
-			}
+			blocklyPanel.addChangeListener(
+					changeEvent -> new Thread(() -> regenerateBlockAssemblies(true), "ProcedureRegenerate").start());
 		});
+		if (!isEditingMode()) {
+			blocklyPanel.setInitialXML(net.mcreator.element.types.Procedure.XML_BASE);
+		}
 
 		skipDependencyNullCheck.addActionListener(e -> regenerateBlockAssemblies(false));
 
@@ -662,9 +664,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	@Override public void openInEditingMode(net.mcreator.element.types.Procedure procedure) {
 		skipDependencyNullCheck.setSelected(procedure.skipDependencyNullCheck);
+		blocklyPanel.setInitialXML(procedure.procedurexml);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			blocklyPanel.setXML(procedure.procedurexml);
-
 			localVars.removeAllElements();
 			blocklyPanel.getLocalVariablesList().forEach(localVars::addElement);
 		});

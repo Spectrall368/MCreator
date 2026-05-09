@@ -30,6 +30,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.validation.AggregatedValidationResult;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,11 +57,13 @@ public class JVillagerTradeEntry extends JPanel {
 			List<JVillagerTradeEntry> entryList) {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-		setBackground((Theme.current().getAltBackgroundColor()).darker());
+		setBackground(Theme.current().getAltBackgroundColor().darker());
 
-		price1 = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+		price1 = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
+				"elementgui.villager_trade.error_trade_needs_price", true);
 		price2 = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
-		offer = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+		offer = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems).requireValue(
+				"elementgui.villager_trade.error_trade_needs_offer", true);
 
 		final JComponent container = PanelUtils.expandHorizontally(this);
 
@@ -127,11 +130,6 @@ public class JVillagerTradeEntry extends JPanel {
 	}
 
 	public VillagerTrade.CustomTradeEntry.Entry getEntry() {
-		if (!price1.containsItem())
-			return null;
-		if (!offer.containsItem())
-			return null;
-
 		VillagerTrade.CustomTradeEntry.Entry entry = new VillagerTrade.CustomTradeEntry.Entry();
 		entry.price1 = price1.getBlock();
 		entry.countPrice1 = (int) countPrice1.getValue();
@@ -157,5 +155,9 @@ public class JVillagerTradeEntry extends JPanel {
 		maxTrades.setValue(e.maxTrades);
 		xp.setValue(e.xp);
 		priceMultiplier.setValue(e.priceMultiplier);
+	}
+
+	public AggregatedValidationResult getValidationResult() {
+		return new AggregatedValidationResult(price1, offer);
 	}
 }
