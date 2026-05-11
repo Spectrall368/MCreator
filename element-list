@@ -39,6 +39,7 @@ net.mcreator.element.parts.procedure
 net.mcreator.element.types
 net.mcreator.element.types.bedrock
 net.mcreator.element.types.interfaces
+net.mcreator.element.util
 net.mcreator.generator
 net.mcreator.generator.blockly
 net.mcreator.generator.mapping
@@ -128,6 +129,7 @@ net.mcreator.ui.minecraft.villagers
 net.mcreator.ui.modgui
 net.mcreator.ui.modgui.bedrock
 net.mcreator.ui.modgui.codeviewer
+net.mcreator.ui.modgui.util
 net.mcreator.ui.notifications
 net.mcreator.ui.procedure
 net.mcreator.ui.search
