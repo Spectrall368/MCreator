@@ -198,8 +198,8 @@ public class ProjectJarManager extends JarManager {
 
 		LOG.debug("Loading JVM {} info from {}", javaReleaseInfo, javaHome);
 
-		final File classesArchive = findExistingPath(javaHome, "lib/rt.jar", "../Classes/classes.jar",
-				"jmods/java.base.jmod", "lib/jrt-fs.jar");
+		final File classesArchive = findExistingPath(javaHome, "lib/rt.jar", "../Classes/classes.jar", "lib/jrt-fs.jar",
+				"jmods/java.base.jmod", "jre/lib/rt.jar");
 		if (classesArchive == null) {
 			throw new GradleCacheImportFailedException(new FileNotFoundException("Failed to find SDK base library"));
 		}
