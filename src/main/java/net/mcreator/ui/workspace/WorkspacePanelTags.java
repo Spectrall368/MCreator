@@ -56,6 +56,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 	// Cache of list fields (so cell renderer just sets the value instead of making a new object) - these are for cell renderer
 	private final JItemListField<MItemBlock> listFieldBlocksItems = new MCItemListField(workspacePanel.getMCreator(),
 			ElementUtil::loadBlocksAndItems).allowTags().allowExternalElements();
+	private final JItemListField<FluidEntry> listFieldFluids = new FluidListField(
+			workspacePanel.getMCreator()).allowTags().allowExternalElements();
 	private final JItemListField<EntityEntry> listFieldEntities = new SpawnableEntityListField(
 			workspacePanel.getMCreator()).allowTags().allowExternalElements();
 	private final JItemListField<BiomeEntry> listFieldBiomes = new BiomeListField(
@@ -90,6 +92,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		super(workspacePanel);
 
 		prepareListField(listFieldBlocksItems);
+		prepareListField(listFieldFluids);
 		prepareListField(listFieldEntities);
 		prepareListField(listFieldBiomes);
 		prepareListField(listFieldStructures);
@@ -102,6 +105,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		prepareListField(listFieldPointsOfInterest);
 		prepareListField(listVillagerTrades);
 
+		listFieldFluids.setReadOnly();
 		listFieldPaintingVariants.setReadOnly();
 		listFieldBannerPatterns.setReadOnly();
 		listFieldPointsOfInterest.setReadOnly();
@@ -144,6 +148,13 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
 									.toList());
 							yield listFieldBlocksItems;
+						}
+						case FLUIDS -> {
+							listFieldFluids.setListElements(entries.map(
+											e -> (FluidEntry) TagElement.entryToMappableElement(
+													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
+									.toList());
+							yield listFieldFluids;
 						}
 						case ENTITIES -> {
 							listFieldEntities.setListElements(entries.map(
@@ -458,6 +469,14 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 									ElementUtil::loadBlocks).allowTags().allowExternalElements();
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (MItemBlock) TagElement.entryToMappableElement(mcreator.getWorkspace(),
+									tagElement.type(), e)).toList());
+					yield retval;
+				}
+				case FLUIDS -> {
+					JItemListField<FluidEntry> retval = new FluidListField(mcreator).allowTags()
+							.allowExternalElements();
+					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
+							.map(e -> (FluidEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
 					yield retval;
 				}
