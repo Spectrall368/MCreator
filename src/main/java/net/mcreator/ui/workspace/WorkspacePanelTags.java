@@ -478,6 +478,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 					retval.setListElements(mcreator.getWorkspace().getTagElements().get(tagElement).stream()
 							.map(e -> (FluidEntry) TagElement.entryToMappableElement(mcreator.getWorkspace(),
 									tagElement.type(), e)).toList());
+					retval.setReadOnly();
 					yield retval;
 				}
 				case ENTITIES -> {
