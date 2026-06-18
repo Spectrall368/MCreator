@@ -59,7 +59,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	@Nullable private final TemplateGenerator templateGenerator;
 	private final Workspace workspace;
 
-	protected final List<IBlockGenerator> blockGenerators;
+	private final List<IBlockGenerator> blockGenerators;
 
 	protected final BlocklyEditorType editorType;
 
@@ -73,6 +73,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	// These variables hold the current template for the head/tail of the currently processed block
 	private String headSection = "";
 	private String tailSection = "";
+
+	private final StringBuilder additionalCode = new StringBuilder();
 
 	private int blockCount = 0;
 
@@ -97,6 +99,9 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 		// add external generators provided by user
 		blockGenerators.addAll(Arrays.asList(externalGenerators));
+
+		// load internally defined blocks
+		blockGenerators.addAll(InternalBlocksLoader.getInternalBlocks(editorType));
 	}
 
 	/**
@@ -175,6 +180,14 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	public final String getGeneratedCode() {
 		return code.toString();
+	}
+
+	public final void addAdditionalCode(String code) {
+		additionalCode.append(code);
+	}
+
+	public final String getAdditionalCode() {
+		return additionalCode.toString();
 	}
 
 	public final String getExtraTemplatesCode() throws TemplateGeneratorException {

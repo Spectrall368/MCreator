@@ -22,8 +22,6 @@ import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
-import net.mcreator.blockly.datapack.blocks.MCItemBlock;
-import net.mcreator.blockly.datapack.blocks.NumberBlock;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -52,9 +50,6 @@ public class BlocklyToJSONTrigger extends BlocklyToCode {
 			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
 			throws TemplateGeneratorException {
 		super(workspace, parent, BlocklyEditorType.JSON_TRIGGER, templateGenerator, externalGenerators);
-
-		blockGenerators.add(new NumberBlock());
-		blockGenerators.add(new MCItemBlock());
 
 		if (sourceXML != null && !sourceXML.isBlank()) {
 			try {
