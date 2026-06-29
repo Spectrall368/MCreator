@@ -62,12 +62,10 @@ loadScripts(document, 'script');</script>
 <li><a href="#openColorSelector(java.lang.String,java.util.function.Consumer)" tabindex="0">openColorSelector(String, Consumer)</a></li>
 <li><a href="#openMCItemSelector(java.lang.String,java.util.function.Consumer)" tabindex="0">openMCItemSelector(String, Consumer)</a></li>
 <li><a href="#openAIConditionEditor(java.lang.String,java.util.function.Consumer)" tabindex="0">openAIConditionEditor(String, Consumer)</a></li>
-<li><a href="#getDataListEntriesForEntrySelector(net.mcreator.workspace.Workspace,java.lang.String,java.lang.String,java.lang.String)" tabindex="0">getDataListEntriesForEntrySelector(Workspace, String, String, String)</a></li>
 <li><a href="#openEntrySelector(java.lang.String,java.lang.String,java.lang.String,java.util.function.Consumer)" tabindex="0">openEntrySelector(String, String, String, Consumer)</a></li>
 <li><a href="#getDependencies(java.lang.String)" tabindex="0">getDependencies(String)</a></li>
 <li><a href="#t(java.lang.String)" tabindex="0">t(String)</a></li>
 <li><a href="#getListOf(java.lang.String)" tabindex="0">getListOf(String)</a></li>
-<li><a href="#getListOfForWorkspace(net.mcreator.workspace.Workspace,java.lang.String)" tabindex="0">getListOfForWorkspace(Workspace, String)</a></li>
 <li><a href="#isPlayerVariable(java.lang.String)" tabindex="0">isPlayerVariable(String)</a></li>
 <li><a href="#getReadableNameOf(java.lang.String,java.lang.String)" tabindex="0">getReadableNameOf(String, String)</a></li>
 </ol>
@@ -96,30 +94,18 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a><wbr>&lt;<a href="../../minecraft/DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getDataListEntriesForEntrySelector(net.mcreator.workspace.Workspace,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getDataListEntriesForEntrySelector</a><wbr>(<a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeFilter,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;customEntryProviders)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Loads data list entries for Blockly entry selectors that use <a href="../../minecraft/DataListEntry.html" title="class in net.mcreator.minecraft"><code>DataListEntry</code></a> lists.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../blockly/data/Dependency.BlocklyDependency.html" title="class in net.mcreator.blockly.data">Dependency.BlocklyDependency</a>[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDependencies(java.lang.String)" class="member-name-link">getDependencies</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;procedureName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getListOf(java.lang.String)" class="member-name-link">getListOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../blockly/data/Dependency.BlocklyDependency.html" title="class in net.mcreator.blockly.data">Dependency.BlocklyDependency</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDependencies(java.lang.String)" class="member-name-link">getDependencies</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;procedureName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getListOfForWorkspace(net.mcreator.workspace.Workspace,java.lang.String)" class="member-name-link">getListOfForWorkspace</a><wbr>(<a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getListOf(java.lang.String)" class="member-name-link">getListOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMCItemURI(java.lang.String)" class="member-name-link">getMCItemURI</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -230,26 +216,6 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getDataListEntriesForEntrySelector(net.mcreator.workspace.Workspace,java.lang.String,java.lang.String,java.lang.String)">
-<h3>getDataListEntriesForEntrySelector</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../minecraft/DataListEntry.html" title="class in net.mcreator.minecraft">DataListEntry</a>&gt;</span>&nbsp;<span class="element-name">getDataListEntriesForEntrySelector</span><wbr><span class="parameters">(<a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- @Nonnull
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type,
- @Nullable
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeFilter,
- @Nullable
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;customEntryProviders)</span></div>
-<div class="block">Loads data list entries for Blockly entry selectors that use <a href="../../minecraft/DataListEntry.html" title="class in net.mcreator.minecraft"><code>DataListEntry</code></a> lists.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>The list of entries, or <code>null</code> if the selector type uses plain strings instead</dd>
-</dl>
-</div>
-</section>
-</li>
-<li>
 <section class="detail" id="openEntrySelector(java.lang.String,java.lang.String,java.lang.String,java.util.function.Consumer)">
 <h3>openEntrySelector</h3>
 <div class="horizontal-scroll">
@@ -292,15 +258,6 @@ loadScripts(document, 'script');</script>
 <h3>getListOf</h3>
 <div class="horizontal-scroll">
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name">getListOf</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type)</span></div>
-</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getListOfForWorkspace(net.mcreator.workspace.Workspace,java.lang.String)">
-<h3>getListOfForWorkspace</h3>
-<div class="horizontal-scroll">
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]</span>&nbsp;<span class="element-name">getListOfForWorkspace</span><wbr><span class="parameters">(<a href="../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- <a href="https://docs.oracle.com/en/java/javase/25/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;type)</span></div>
 </div>
 </section>
 </li>
