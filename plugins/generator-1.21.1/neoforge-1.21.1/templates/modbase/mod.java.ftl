@@ -42,6 +42,10 @@ import org.apache.logging.log4j.Logger;
 
 		// Start of user code block mod init
 		// End of user code block mod init
+
+		<#list settings.getMigratedMappings() as e>
+		BuiltInRegistries.${e.registry()}.addAlias(ResourceLocation.parse("${e.from()}"), ResourceLocation.parse("${e.to()}"));
+		</#list>
 	}
 
 	// Start of user code block mod methods

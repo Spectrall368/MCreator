@@ -22,10 +22,12 @@ import com.google.common.base.CaseFormat;
 import net.mcreator.plugin.modapis.ModAPIImplementation;
 import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.minecraft.mapping.Mapping;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.Workspace;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -46,6 +48,7 @@ import java.util.stream.Stream;
 
 	private boolean serverSideOnly = false;
 	private String updateURL;
+	public List<Mapping> migratedMappings = new LinkedList<>();
 
 	private String modPicture = null;
 
@@ -81,6 +84,7 @@ import java.util.stream.Stream;
 		this.websiteURL = other.websiteURL;
 		this.serverSideOnly = other.serverSideOnly;
 		this.updateURL = other.updateURL;
+		this.migratedMappings = other.migratedMappings;
 		this.modPicture = other.modPicture;
 		this.requiredMods = other.requiredMods;
 		this.dependencies = other.dependencies;
@@ -127,6 +131,10 @@ import java.util.stream.Stream;
 
 	public void setUpdateURL(String updateURL) {
 		this.updateURL = updateURL;
+	}
+
+	public void setMigratedMappings(List<Mapping> migratedMappings) {
+		this.migratedMappings = migratedMappings;
 	}
 
 	public void setModPicture(String modPicture) {
@@ -274,6 +282,10 @@ import java.util.stream.Stream;
 
 	public String getUpdateURL() {
 		return updateURL;
+	}
+
+	public List<Mapping> getMigratedMappings() {
+		return migratedMappings;
 	}
 
 	public String getModPicture() {

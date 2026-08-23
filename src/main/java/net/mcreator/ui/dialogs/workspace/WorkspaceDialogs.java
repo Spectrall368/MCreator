@@ -37,6 +37,7 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.minecraft.mapping.JMappingList;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.ValidationResult;
@@ -57,6 +58,7 @@ import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -165,6 +167,7 @@ public class WorkspaceDialogs {
 		final JComboBox<String> modPicture = new JComboBox<>();
 		final JCheckBox serverSideOnly = L10N.checkbox("dialog.workspace_settings.server_side_mod");
 		final JTextField updateJSON = new JTextField(24);
+		final JMappingList migratedMappings;
 		final JStringListField requiredMods;
 		final JStringListField dependencies;
 		final JStringListField dependants;
@@ -195,6 +198,7 @@ public class WorkspaceDialogs {
 			requiredMods = new JStringListField(parent, NamespaceValidator::new).setUniqueEntries(true);
 			dependencies = new JStringListField(parent, NamespaceValidator::new).setUniqueEntries(true);
 			dependants = new JStringListField(parent, NamespaceValidator::new).setUniqueEntries(true);
+			migratedMappings = new JMappingList(null, IHelpContext.NONE);
 
 			if (workspace != null) { // prevent modid autofill on existing workspaces
 				modIDManuallyEntered = true;
@@ -533,11 +537,12 @@ public class WorkspaceDialogs {
 				_external_apis.add(apiSettings);
 			}
 
-			JPanel advancedSettings = new JPanel(new GridLayout(2, 2, 5, 2));
+			JPanel advancedSettings = new JPanel(new GridLayout(3, 2, 5, 2));
 			advancedSettings.setBorder(BorderFactory.createTitledBorder(
 					BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 					L10N.t("dialog.workspace_settings.section.advanced")));
 			_advancedSettings.add(advancedSettings);
+			_advancedSettings.add(migratedMappings);
 			advancedSettings.add(L10N.label("dialog.workspace_settings.server_side_only"));
 			advancedSettings.add(serverSideOnly);
 			advancedSettings.add(L10N.label("dialog.workspace_settings.update_url"));
@@ -573,6 +578,7 @@ public class WorkspaceDialogs {
 						workspace.getWorkspaceSettings().getModPicture());
 				serverSideOnly.setSelected(workspace.getWorkspaceSettings().isServerSideOnly());
 				updateJSON.setText(workspace.getWorkspaceSettings().getUpdateURL());
+				migratedMappings.setEntries(workspace.getWorkspaceSettings().migratedMappings);
 				credits.setText(workspace.getWorkspaceSettings().getCredits());
 				packageName.setText(workspace.getWorkspaceSettings().getModElementsPackage());
 
@@ -608,6 +614,7 @@ public class WorkspaceDialogs {
 			retVal.setModElementsPackage(packageName.getText().isEmpty() ? null : packageName.getText());
 			retVal.setServerSideOnly(serverSideOnly.isSelected());
 			retVal.setUpdateURL(updateJSON.getText().isEmpty() ? null : updateJSON.getText());
+			retVal.setMigratedMappings(migratedMappings.getEntries());
 			retVal.setCurrentGenerator(
 					((GeneratorConfiguration) Objects.requireNonNull(generator.getSelectedItem())).getGeneratorName());
 
