@@ -1,40 +1,41 @@
-// Made with Blockbench 5.1.1
-// Exported for Minecraft version 1.14 with MCP mappings
+// Made with Blockbench 5.1.6
+// Exported for Minecraft version 1.7 - 1.12
 // Paste this class into your mod and generate all required imports
 
-public class CustomJavaModel extends EntityModel {
-	private final RendererModel body;
-	private final RendererModel head;
-	private final RendererModel leg0;
-	private final RendererModel leg1;
-	private final RendererModel leg2;
-	private final RendererModel leg3;
+
+public class CustomJavaModel extends ModelBase {
+	private final ModelRenderer body;
+	private final ModelRenderer head;
+	private final ModelRenderer leg0;
+	private final ModelRenderer leg1;
+	private final ModelRenderer leg2;
+	private final ModelRenderer leg3;
 
 	public CustomJavaModel() {
 		textureWidth = 64;
 		textureHeight = 32;
 
-		body = new RendererModel(this);
+		body = new ModelRenderer(this);
 		body.setRotationPoint(0.0F, 24.0F, 0.0F);
 		body.cubeList.add(new ModelBox(body, 16, 16, -4.0F, -18.0F, -2.0F, 8, 12, 4, 0.0F, false));
 
-		head = new RendererModel(this);
+		head = new ModelRenderer(this);
 		head.setRotationPoint(0.0F, 6.0F, 0.0F);
 		head.cubeList.add(new ModelBox(head, 0, 0, -4.0F, -8.0F, -4.0F, 8, 8, 8, 0.0F, false));
 
-		leg0 = new RendererModel(this);
+		leg0 = new ModelRenderer(this);
 		leg0.setRotationPoint(2.0F, 18.0F, 4.0F);
 		leg0.cubeList.add(new ModelBox(leg0, 0, 16, -2.0F, 0.0F, -2.0F, 4, 6, 4, 0.0F, false));
 
-		leg1 = new RendererModel(this);
+		leg1 = new ModelRenderer(this);
 		leg1.setRotationPoint(-2.0F, 18.0F, 4.0F);
 		leg1.cubeList.add(new ModelBox(leg1, 0, 16, -2.0F, 0.0F, -2.0F, 4, 6, 4, 0.0F, false));
 
-		leg2 = new RendererModel(this);
+		leg2 = new ModelRenderer(this);
 		leg2.setRotationPoint(2.0F, 18.0F, -4.0F);
 		leg2.cubeList.add(new ModelBox(leg2, 0, 16, -2.0F, 0.0F, -2.0F, 4, 6, 4, 0.0F, false));
 
-		leg3 = new RendererModel(this);
+		leg3 = new ModelRenderer(this);
 		leg3.setRotationPoint(-2.0F, 18.0F, -4.0F);
 		leg3.cubeList.add(new ModelBox(leg3, 0, 16, -2.0F, 0.0F, -2.0F, 4, 6, 4, 0.0F, false));
 	}
@@ -49,7 +50,7 @@ public class CustomJavaModel extends EntityModel {
 		leg3.render(f5);
 	}
 
-	public void setRotationAngle(RendererModel modelRenderer, float x, float y, float z) {
+	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
 		modelRenderer.rotateAngleX = x;
 		modelRenderer.rotateAngleY = y;
 		modelRenderer.rotateAngleZ = z;
